@@ -67,7 +67,7 @@ locals {
     for interface in var.secondary_floating_ips :
     [
       # For each virtual server
-      for server in ibm_is_server.bms :
+      for server in module.bare_metal_server :
       {
         # fip name
         name = "${server.name}-${interface}-fip"

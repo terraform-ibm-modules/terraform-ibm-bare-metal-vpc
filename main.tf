@@ -101,3 +101,45 @@ module "virtual_network_interfaces" {
   security_groups       = var.secondary_security_groups
   manage_reserved_ips   = var.manage_reserved_ips
 }
+
+module "floating_ips" {
+  source = "./modules/floating_ip"
+
+  floating_ip_map = merge(
+    // Primary BMS Floating IPs
+    {
+      for key, bms in module.bare_metal_server :
+      key => {
+        name           = "${bms.name}-fip"
+        target         = var.use_legacy_network_interface ? bms.primary_network_interface[0].id : bms.primary_network_attachment[0].virtual_network_interface[0].id
+        tags           = var.tags
+        access_tags    = var.access_tags
+        resource_group = var.resource_group_id
+      } if var.enable_floating_ip
+    },
+
+    // Legacy Secondary Floating IPs
+    {
+      for interface in local.legacy_secondary_fip_list :
+      interface.name => {
+        name           = interface.name
+        target         = interface.target
+        tags           = var.tags
+        access_tags    = var.access_tags
+        resource_group = var.resource_group_id
+      }
+    } if var.use_legacy_network_interface && length(var.secondary_floating_ips) > 0 else {},
+
+    // VNI Secondary Floating IPs
+    {
+      for key, value in local.secondary_fip_map :
+      key => {
+        name           = key
+        target         = value.vni_id
+        tags           = var.tags
+        access_tags    = var.access_tags
+        resource_group = var.resource_group_id
+      }
+    }
+  )
+}
