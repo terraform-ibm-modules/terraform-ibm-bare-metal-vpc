@@ -51,3 +51,11 @@ output "fip_list" {
     } if var.enable_floating_ip == true
   ]
 }
+
+output "reserved_ip_ids" {
+  value = module.reserved_ips.reserved_ip_ids
+}
+
+output "reserved_ip_names" {
+  value = module.reserved_ips.reserved_ip_names
+}

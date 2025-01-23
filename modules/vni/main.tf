@@ -4,13 +4,13 @@ resource "ibm_is_virtual_network_interface" "vni" {
   subnet   = each.value.subnet_id
 
   security_groups = length(flatten([
-    (var.create_security_group && each.value.use_vsi_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
+    (var.create_security_group && each.value.use_bms_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
     [
       for group in var.security_groups :
       group.security_group_id if group.interface_name == each.value.name
     ]
   ])) == 0 ? [data.ibm_is_vpc.vpc.default_security_group] : flatten([
-    (var.create_security_group && each.value.use_vsi_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
+    (var.create_security_group && each.value.use_bms_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
     [
       for group in var.security_groups :
       group.security_group_id if group.interface_name == each.value.name
