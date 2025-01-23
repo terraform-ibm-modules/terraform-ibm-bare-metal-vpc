@@ -28,13 +28,14 @@ module "bare_metal_server" {
 module "reserved_ips" {
   source = "./modules/reserved_ip"
 
-  reserved_ips_map = merge(
+reserved_ips_map = merge(
     {
       for bms_key, bms_value in local.bms_map :
       bms_key => {
         name        = "${bms_value.name}-ip"
         subnet_id   = bms_value.subnet_id
         auto_delete = false
+        type        = "primary"
       } if var.manage_reserved_ips
     },
     {
@@ -43,6 +44,7 @@ module "reserved_ips" {
         name        = "${var.prefix}-${substr(md5(value.name), -4, 4)}-ip"
         subnet_id   = value.subnet_id
         auto_delete = false
+        type        = "secondary"
       } if var.primary_vni_additional_ip_count > 0 && !var.use_legacy_network_interface
     },
     {
@@ -51,9 +53,11 @@ module "reserved_ips" {
         name        = "${var.prefix}-${substr(md5(value.name), -4, 4)}-secondary-vni-ip"
         subnet_id   = value.subnet_id
         auto_delete = false
+        type        = "secondary"
       } if !var.use_legacy_network_interface && var.manage_reserved_ips
     }
   )
+
 
   prefix = var.prefix
 }
@@ -63,24 +67,33 @@ module "virtual_network_interfaces" {
   source = "./modules/vni"
 
   resource_map = merge(
-    { for bms_key, bms_value in local.bms_map : bms_key => {
+    {
+      for bms_key, bms_value in local.bms_map :
+      bms_key => {
         name                   = "${bms_value.bms_name}-vni"
         subnet_id              = bms_value.subnet_id
         allow_ip_spoofing      = var.allow_ip_spoofing
         use_bms_security_group = var.create_security_group
-        primary_reserved_ip    = var.manage_reserved_ips ? ibm_is_subnet_reserved_ip.bms_ip[bms_value.name].reserved_ip : null
-        secondary_reserved_ips = var.manage_reserved_ips ? { for count in range(var.primary_vni_additional_ip_count) : count => ibm_is_subnet_reserved_ip.secondary_bms_ip["${bms_value.name}-${count}"].reserved_ip } : null
+        primary_reserved_ip    = var.manage_reserved_ips ? module.reserved_ips.primary_ips[bms_value.name] : null
+        secondary_reserved_ips = var.manage_reserved_ips ? {
+          for count in range(var.primary_vni_additional_ip_count) :
+          count => module.reserved_ips.secondary_ips["${bms_value.name}-${count}"]
+        } : null
         additional_ip_count    = var.primary_vni_additional_ip_count
-      } if !var.use_legacy_network_interface },
-    { for key, value in local.secondary_vni_map : key => {
+      } if !var.use_legacy_network_interface
+    },
+    {
+      for key, value in local.secondary_vni_map :
+      key => {
         name                   = value.name
         subnet_id              = value.subnet_id
         allow_ip_spoofing      = var.secondary_allow_ip_spoofing
         use_bms_security_group = var.secondary_use_bms_security_group
-        primary_reserved_ip    = var.manage_reserved_ips ? ibm_is_subnet_reserved_ip.secondary_vni_ip[key].reserved_ip : null
+        primary_reserved_ip    = var.manage_reserved_ips ? module.reserved_ips.primary_ips[key] : null
         secondary_reserved_ips = {}
         additional_ip_count    = 0
-      } if !var.use_legacy_network_interface }
+      } if !var.use_legacy_network_interface
+    }
   )
 
   create_security_group = var.create_security_group

@@ -1,9 +1,15 @@
-output "reserved_ip_ids" {
-  description = "Map of reserved IP IDs."
-  value = { for key, ip in ibm_is_subnet_reserved_ip.reserved_ip : key => ip.id }
+output "primary_ips" {
+  description = "Map of primary reserved IPs"
+  value       = {
+    for key, ip in ibm_is_subnet_reserved_ip.primary_ips :
+    key => ip.reserved_ip
+  }
 }
 
-output "reserved_ip_names" {
-  description = "Map of reserved IP Names."
-  value = { for key, ip in ibm_is_subnet_reserved_ip.reserved_ip : key => ip.name }
+output "secondary_ips" {
+  description = "Map of secondary reserved IPs"
+  value       = {
+    for key, ip in ibm_is_subnet_reserved_ip.secondary_ips :
+    key => ip.reserved_ip
+  }
 }
