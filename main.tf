@@ -12,8 +12,8 @@ module "bare_metal_server" {
   vpc_id             = var.vpc_id
 
   use_legacy_network_interface = var.use_legacy_network_interface
-  primary_vni                  = var.primary_vni
-  secondary_vnis               = var.secondary_vnis
+  primary_vni                  = module.virtual_network_interfaces.primary_vnis[local.bms_name]
+  secondary_vnis               = module.virtual_network_interfaces.secondary_vnis
   bms_name                     = var.bms_name
   primary_legacy_interface     = var.primary_legacy_interface
   legacy_additional_interfaces = var.legacy_additional_interfaces
@@ -22,6 +22,7 @@ module "bare_metal_server" {
   secondary_security_groups       = var.secondary_security_groups
   default_security_group          = var.default_security_group
   manage_reserved_ips             = var.manage_reserved_ips
+  primary_reserved_ips             = module.reserved_ips.primary_ips
   secondary_use_bms_security_group = var.secondary_use_bms_security_group
 }
 
@@ -103,7 +104,7 @@ module "virtual_network_interfaces" {
 }
 
 module "floating_ips" {
-  source = "./modules/floating_ip"
+  source = "./modules/fip"
 
   floating_ip_map = merge(
     // Primary BMS Floating IPs
@@ -119,7 +120,7 @@ module "floating_ips" {
     },
 
     // Legacy Secondary Floating IPs
-    {
+    var.use_legacy_network_interface && length(var.secondary_floating_ips) > 0 ? {
       for interface in local.legacy_secondary_fip_list :
       interface.name => {
         name           = interface.name
@@ -128,7 +129,7 @@ module "floating_ips" {
         access_tags    = var.access_tags
         resource_group = var.resource_group_id
       }
-    } if var.use_legacy_network_interface && length(var.secondary_floating_ips) > 0 else {},
+    } : {},
 
     // VNI Secondary Floating IPs
     {

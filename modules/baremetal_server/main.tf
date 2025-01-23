@@ -11,7 +11,7 @@ resource "ibm_is_bare_metal_server" "bms" {
 
   # Primary Virtual Network Interface
   dynamic "primary_network_attachment" {
-    for_each = var.use_legacy_network_interface ? [] : [1]
+    for_each = var.use_legacy_network_interface ? [] : [var.primary_vni]
     content {
       name = ibm_is_virtual_network_interface.primary_vni[each.key].name
       virtual_network_interface {
@@ -45,11 +45,11 @@ resource "ibm_is_bare_metal_server" "bms" {
       dynamic "primary_ip" {
         for_each = var.manage_reserved_ips ? [1] : []
         content {
-          reserved_ip = ibm_is_subnet_reserved_ip.vsi_ip[each.value.name].reserved_ip
+          reserved_ip = var.primary_reserved_ips[each.value.name].reserved_ip
         }
       }
     }
-  }
+  } 
   # Legacy additional Network Interface
   dynamic "network_interfaces" {
     for_each = {

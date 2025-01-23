@@ -91,6 +91,19 @@ variable "manage_reserved_ips" {
   default     = false
 }
 
+variable "primary_reserved_ips" {
+  description = "List of secondary interfaces to add floating ips"
+  type        = list(string)
+  default     = []
+}  
+
+variable "primary_vni" {
+  description = "Primary Virtual Network Interface details (name and id)"
+  type = map(object({
+    name = string
+    id   = string
+  }))
+}
 ##############################################################################
 # Secondary Interface Variables
 ##############################################################################
