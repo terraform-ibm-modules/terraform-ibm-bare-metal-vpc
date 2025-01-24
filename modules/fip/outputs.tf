@@ -1,15 +1,12 @@
-output "primary_ips" {
-  description = "Map of primary reserved IPs"
-  value       = {
-    for key, ip in ibm_is_subnet_reserved_ip.primary_ips :
-    key => ip.reserved_ip
-  }
-}
-
-output "secondary_ips" {
-  description = "Map of secondary reserved IPs"
-  value       = {
-    for key, ip in ibm_is_subnet_reserved_ip.secondary_ips :
-    key => ip.reserved_ip
+output "floating_ips" {
+  description = "Map of created Floating IPs"
+  value = {
+    for key, fip in ibm_is_floating_ip.fips :
+    key => {
+      id       = fip.id
+      name     = fip.name
+      target   = fip.target
+      address  = fip.address
+    }
   }
 }

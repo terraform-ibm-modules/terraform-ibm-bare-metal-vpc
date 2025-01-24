@@ -13,9 +13,9 @@ resource "ibm_is_bare_metal_server" "bms" {
   dynamic "primary_network_attachment" {
     for_each = var.use_legacy_network_interface ? [] : [var.primary_vni]
     content {
-      name = ibm_is_virtual_network_interface.primary_vni[each.key].name
+      name = each.key.name
       virtual_network_interface {
-        id = ibm_is_virtual_network_interface.primary_vni[each.key].id
+        id = each.key.id
       }
     }
   }
@@ -39,7 +39,7 @@ resource "ibm_is_bare_metal_server" "bms" {
       security_groups = flatten([
         (var.create_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
         var.security_group_ids,
-        (var.create_security_group == false && length(var.security_group_ids) == 0 ? [data.ibm_is_vpc.vpc.default_security_group] : []),
+        (var.create_security_group == false && length(var.security_group_ids) == 0 ? [var.default_security_group] : []),
       ])
       allow_ip_spoofing = var.allow_ip_spoofing
       dynamic "primary_ip" {
@@ -65,7 +65,7 @@ resource "ibm_is_bare_metal_server" "bms" {
           for group in var.secondary_security_groups :
           group.security_group_id if group.interface_name == network_interfaces.value.name
         ]
-        ])) == 0 ? [data.ibm_is_vpc.vpc.default_security_group] : flatten([
+        ])) == 0 ? [var.default_security_group] : flatten([
         (var.create_security_group && var.secondary_use_vsi_security_group ? [ibm_is_security_group.security_group[var.security_group.name].id] : []),
         [
           for group in var.secondary_security_groups :

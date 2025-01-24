@@ -9,11 +9,6 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "subnet_id" {
-  description = "Name of the subnet."
-  type        = string
-}
-
 variable "zone" {
   description = "Zone for the resources."
   type        = string
@@ -61,6 +56,60 @@ variable "use_legacy_network_interface" {
 variable "create_security_group" {
   description = "Create security group for VSI. If this is passed as false, the default will be used"
   type        = bool
+}
+
+variable "default_security_group" {
+  description = "Security group created for VSI"
+  type = object({
+    name = string
+    rules = list(
+      object({
+        name      = string
+        direction = string
+        source    = string
+        tcp = optional(
+          object({
+            port_max = number
+            port_min = number
+          })
+        )
+        udp = optional(
+          object({
+            port_max = number
+            port_min = number
+          })
+        )
+        icmp = optional(
+          object({
+            type = number
+            code = number
+          })
+        )
+      })
+    )
+  })
+
+  validation {
+    error_message = "Each security group rule must have a unique name."
+    condition = (
+      var.security_group == null
+      ? true
+      : length(distinct(var.default_security_group.rules[*].name)) == length(var.default_security_group.rules[*].name)
+    )
+  }
+
+  validation {
+    error_message = "Security group rule direction can only be `inbound` or `outbound`."
+    condition = var.default_security_group == null ? true : length(
+      distinct(
+        flatten([
+          for rule in var.default_security_group.rules :
+          false if !contains(["inbound", "outbound"], rule.direction)
+        ])
+      )
+    ) == 0
+  }
+  default = null
 }
 
 variable "security_group_ids" {

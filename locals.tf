@@ -40,10 +40,10 @@ locals {
   }
 
   # Create map of bms from list
-  bms_map = {
+  /*bms_map = {
     for server in local.bms_list :
     server.name => server
-  }
+  }*/
 
   # List of additional private IP addresses to bind to the primary virtual network interface.
   secondary_reserved_ips_list = flatten([
@@ -67,7 +67,7 @@ locals {
     for interface in var.secondary_floating_ips :
     [
       # For each virtual server
-      for server in module.bare_metal_server :
+      for server in module.baremetal_server :
       {
         # fip name
         name = "${server.name}-${interface}-fip"
@@ -96,3 +96,56 @@ locals {
   }
 
 }
+
+locals {
+  reserved_ips_map = merge(
+    {
+      for bms_key, bms_value in local.bms_map :
+      bms_key => {
+        name        = "${bms_value.bms_name}-ip"
+        subnet_id   = bms_value.subnet_id
+        auto_delete = false
+      }
+    },
+    {
+      for key, value in local.secondary_vni_map :
+      key => {
+        name        = "${var.prefix}-${substr(md5(value.name), -4, 4)}-secondary-vni-ip"
+        subnet_id   = value.subnet_id
+        auto_delete = false
+      }
+    }
+  )
+}
+
+locals {
+  bms_map = {
+    for bms_key, bms_value in local.bms_list :
+    bms_key => {
+      bms_name   = bms_value.name
+      subnet_id  = bms_value.subnet_id
+      zone       = bms_value.zone
+      vpc_id     = var.vpc_id
+    }
+  }
+}
+
+
+locals {
+  resource_map = {
+    for bms_key, bms_value in local.bms_map :
+    bms_key => {
+      name                   = "${bms_value.bms_name}-vni"
+      subnet_id              = bms_value.subnet_id
+      allow_ip_spoofing      = var.allow_ip_spoofing
+      primary_reserved_ip    = var.manage_reserved_ips ? module.reserved_ips.primary_ips[bms_key] : null
+      secondary_reserved_ips = var.manage_reserved_ips ? {
+        for count in range(var.primary_vni_additional_ip_count) :
+        count => module.reserved_ips.secondary_ips["${bms_value.bms_name}-${count}"]
+      } : null
+      additional_ip_count    = var.primary_vni_additional_ip_count
+    }
+  }
+}
+
+
