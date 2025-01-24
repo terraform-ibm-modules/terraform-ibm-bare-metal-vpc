@@ -1,30 +1,39 @@
-########################################################################################################################
-# Outputs
-########################################################################################################################
-
-#
-# Developer tips:
-#   - Below are some good practise sample outputs
-#   - They should be updated for outputs applicable to the module being added
-#   - Use variable validation when possible
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "bare_metal_server_id" {
+  description = "The ID of the bare metal server."
+  value       = module.baremetal.bare_metal_id
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "disk_ids" {
+  description = "The IDs of the attached disks."
+  value       = module.disk.disk_ids
 }
 
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
+output "floating_ip_ids" {
+  description = "The IDs of the floating IPs."
+  value       = module.fip.fip_ids
 }
 
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+output "reserved_ips" {
+  description = "Reserved IPs created by the network module."
+  value = module.network.reserved_ips
+}
+
+output "vni_ids" {
+  description = "Virtual Network Interface IDs created by the network module."
+  value = module.network.vni_ids
+}
+
+output "bms_id" {
+  description = "ID of the bare metal server."
+  value       = module.bms.bms_id
+}
+
+output "primary_network_interface" {
+  description = "Primary network interface of the bare metal server."
+  value       = module.bms.primary_network_interface
+}
+
+output "secondary_network_interfaces" {
+  description = "List of secondary network interfaces of the bare metal server."
+  value       = module.bms.secondary_network_interfaces
 }
