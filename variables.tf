@@ -1,3 +1,8 @@
+variable "resource_group_id" {
+  description = "ID of resource group to create VSI and block storage volumes. If you wish to create the block storage volumes in a different resource group, you can optionally set that directly in the 'block_storage_volumes' variable."
+  type        = string
+}
+
 variable "bare_metal_profile" {
   description = "The profile to use for the bare metal server."
   type        = string
@@ -109,7 +114,7 @@ variable "create_security_group" {
 }
 
 variable "security_group" {
-  description = "Security group created for VSI"
+  description = "Security group created for BMS"
   type = object({
     name = string
     rules = list(
@@ -186,4 +191,79 @@ variable "secondary_use_bms_security_group" {
   description = "Use the security group created by this module in the secondary interface"
   type        = bool
   default     = false
+}
+
+variable "manage_reserved_ips" {
+  description = "Set to `true` if you want this terraform module to manage the reserved IP addresses that are assigned to BMS instances. If this option is enabled, when any BMS is recreated it should retain its original IP."
+  type        = bool
+  default     = false
+}
+
+variable "secondary_allow_ip_spoofing" {
+  description = "Allow IP spoofing on additional network interfaces"
+  type        = bool
+  default     = false
+}
+
+variable "security_group_ids" {
+  description = "IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups."
+  type        = list(string)
+  default     = []
+
+  validation {
+    error_message = "Security group IDs must be unique."
+    condition     = length(var.security_group_ids) == length(distinct(var.security_group_ids))
+  }
+
+  validation {
+    error_message = "No more than 5 security groups can be added to a BMS deployment."
+    condition     = length(var.security_group_ids) <= 5
+  }
+}
+
+variable "secondary_security_groups" {
+  description = "The security group IDs to add to the BMS deployment secondary interfaces (5 maximum). Use the same value for interface_name as for name in secondary_subnets to avoid applying the default VPC security group on the secondary network interface."
+  type = list(
+    object({
+      security_group_id = string
+      interface_name    = string
+    })
+  )
+  default = []
+
+  validation {
+    error_message = "Security group IDs must be unique."
+    condition     = length(var.secondary_security_groups) == length(distinct(var.secondary_security_groups))
+  }
+
+  validation {
+    error_message = "No more than 5 security groups can be added to a BMS deployment."
+    condition     = length(var.secondary_security_groups) <= 5
+  }
+}
+
+variable "secondary_vnis" {
+  description = "Map of secondary VNI IDs to attach to the Bare Metal Server."
+  type        = map(string)
+  default     = {}
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the VSI resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
+    ])
+    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
+  }
+}
+
+variable "security_group_map" {
+  description = "A map of security groups where the key is the group name and the value is the group object."
+  type = map(object({
+    name = string
+  }))
 }

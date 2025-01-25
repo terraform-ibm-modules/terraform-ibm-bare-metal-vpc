@@ -86,8 +86,8 @@ variable "create_security_group" {
   default     = false
 }
 
-variable "secondary_use_vsi_security_group" {
-  description = "Boolean to specify whether to use the VSI's security group for secondary interfaces."
+variable "secondary_use_bms_security_group" {
+  description = "Boolean to specify whether to use the BMS's security group for secondary interfaces."
   type        = bool
   default     = false
 }

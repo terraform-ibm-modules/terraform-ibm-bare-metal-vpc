@@ -1,3 +1,8 @@
+variable "resource_group_id" {
+  description = "ID of resource group to create VSI and block storage volumes. If you wish to create the block storage volumes in a different resource group, you can optionally set that directly in the 'block_storage_volumes' variable."
+  type        = string
+}
+
 variable "manage_reserved_ips" {
   description = "Flag to determine whether reserved IPs should be managed."
   type        = bool
@@ -48,7 +53,7 @@ variable "prefix" {
 }
 
 variable "bms_map" {
-  description = "Map of VSI configurations."
+  description = "Map of BMS configurations."
   type        = map(object({
     name      = string
     subnet_id = string
@@ -77,3 +82,46 @@ variable "secondary_use_bms_security_group" {
   type        = bool
   default     = false
 }
+
+variable "vpc_id" {
+  description = "ID of VPC"
+  type        = string
+}
+
+variable "security_group_map" {
+  description = "A map of security groups where the key is the group name and the value is the group object."
+  type = map(object({
+    name = string
+  }))
+}
+
+variable "tags" {
+  description = "List of tags to apply to resources created by this module."
+  type        = list(string)
+  default     = []
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the VSI resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
+    ])
+    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
+  }
+}
+
+variable "security_group_rules" {
+  description = "A map of security group rules keyed by a combination of security group name and rule name."
+  type = map(object({
+    protocol   = string        
+    port_range = string        
+    direction  = string        
+    source     = string
+  }))
+  default = {}
+}
+
