@@ -114,6 +114,60 @@ variable "access_tags" {
   }
 }
 
+variable "security_group" {
+  description = "Security group created for VSI"
+  type = object({
+    name = string
+    rules = list(
+      object({
+        name      = string
+        direction = string
+        source    = string
+        tcp = optional(
+          object({
+            port_max = number
+            port_min = number
+          })
+        )
+        udp = optional(
+          object({
+            port_max = number
+            port_min = number
+          })
+        )
+        icmp = optional(
+          object({
+            type = number
+            code = number
+          })
+        )
+      })
+    )
+  })
+
+  validation {
+    error_message = "Each security group rule must have a unique name."
+    condition = (
+      var.security_group == null
+      ? true
+      : length(distinct(var.security_group.rules[*].name)) == length(var.security_group.rules[*].name)
+    )
+  }
+
+  validation {
+    error_message = "Security group rule direction can only be `inbound` or `outbound`."
+    condition = var.security_group == null ? true : length(
+      distinct(
+        flatten([
+          for rule in var.security_group.rules :
+          false if !contains(["inbound", "outbound"], rule.direction)
+        ])
+      )
+    ) == 0
+  }
+  default = null
+}
+
 variable "security_group_rules" {
   description = "A map of security group rules keyed by a combination of security group name and rule name."
   type = map(object({
