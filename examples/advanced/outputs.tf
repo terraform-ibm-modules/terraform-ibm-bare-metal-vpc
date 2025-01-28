@@ -1,38 +1,38 @@
-##############################################################################
-# Outputs
-##############################################################################
+########################################################################################################################
+# Outputs for BareMetal Servers
+########################################################################################################################
 
-#
-# Developer tips:
-#   - Include all relevant outputs from the modules being called in the example
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = module.cos.account_id
+output "bare_metal_server_ids" {
+  description = "The IDs of the deployed bare metal servers."
+  value = {
+    for name, server in module.slz_bms.bare_metal_servers : name => server.id
+  }
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = module.cos.account_id
+output "bare_metal_server_names" {
+  description = "The names of the deployed bare metal servers."
+  value = {
+    for name, server in module.slz_bms.bare_metal_servers : name => server.name
+  }
 }
 
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = module.cos.id
+output "bare_metal_server_private_ips" {
+  description = "The private IP addresses of the deployed bare metal servers."
+  value = {
+    for name, server in module.slz_bms.bare_metal_servers : name => server.private_ip
+  }
 }
 
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = module.cos.crn
+output "bare_metal_server_zones" {
+  description = "The zones of the deployed bare metal servers."
+  value = {
+    for name, server in module.slz_bms.bare_metal_servers : name => server.zone
+  }
 }
 
-output "resource_group_name" {
-  description = "Resource group name."
-  value       = module.resource_group.resource_group_name
-}
-
-output "resource_group_id" {
-  description = "Resource group ID."
-  value       = module.resource_group.resource_group_id
+output "bare_metal_server_primary_subnets" {
+  description = "The primary subnets assigned to the bare metal servers."
+  value = {
+    for name, server in module.slz_bms.bare_metal_servers : name => server.primary_subnet
+  }
 }

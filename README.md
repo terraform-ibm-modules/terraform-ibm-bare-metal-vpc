@@ -26,8 +26,9 @@ TODO: Replace this with a description of the modules in this repo.
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
+* [Submodules](./modules)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
+    * [Basic example](./examples/advanced)
     * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
@@ -122,35 +123,36 @@ statement instead the previous block.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.71.2, < 2.0.0 |
 
 ### Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_bare_metal_servers"></a> [bare\_metal\_servers](#module\_bare\_metal\_servers) | ./modules/baremetal | n/a |
 
 ### Resources
 
-| Name | Type |
-|------|------|
-| [ibm_resource_instance.cos_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
+No resources.
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | A descriptive name used to identify the resource instance. | `string` | n/a | yes |
-| <a name="input_plan"></a> [plan](#input\_plan) | The name of the plan type supported by service. | `string` | `"standard"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group where you want to create the service. | `string` | n/a | yes |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | List of resource tag to associate with the instance. | `list(string)` | `[]` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the BMS resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
+| <a name="input_allow_ip_spoofing"></a> [allow\_ip\_spoofing](#input\_allow\_ip\_spoofing) | Whether to allow IP spoofing on the network interface | `string` | n/a | yes |
+| <a name="input_bare_metal_servers"></a> [bare\_metal\_servers](#input\_bare\_metal\_servers) | Configuration for bare metal servers | <pre>map(object({<br/>    profile = string<br/>    prefix  = string<br/>    image   = string<br/>    zone    = string<br/>    keys    = list(string)<br/>  }))</pre> | n/a | yes |
+| <a name="input_bms_per_subnet"></a> [bms\_per\_subnet](#input\_bms\_per\_subnet) | Number Baremetal Servers for each subnet | `number` | n/a | yes |
+| <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Create security group for BMS. If this is passed as false, the default will be used | `bool` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of resource group to create BMS. | `string` | n/a | yes |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | A list of subnet IDs where BMS will be deployed | <pre>list(<br/>    object({<br/>      name = string<br/>      id   = string<br/>      zone = string<br/>      cidr = optional(string)<br/>    })<br/>  )</pre> | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of VPC | `string` | n/a | yes |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | An alpha-numeric value identifying the account ID. |
-| <a name="output_crn"></a> [crn](#output\_crn) | The CRN of the resource instance. |
-| <a name="output_guid"></a> [guid](#output\_guid) | The GUID of the resource instance. |
-| <a name="output_id"></a> [id](#output\_id) | The unique identifier of the resource instance. |
+| <a name="output_bare_metal_servers"></a> [bare\_metal\_servers](#output\_bare\_metal\_servers) | Details of the provisioned bare metal servers |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->

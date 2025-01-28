@@ -1,13 +1,22 @@
-#
-# Developer tips:
-#   - Below code should be replaced with the code for the root level module
-#
+#########################################################
+######            BareMetal Server Module          ######
+#########################################################
 
-resource "ibm_resource_instance" "cos_instance" {
-  name              = var.name
-  resource_group_id = var.resource_group_id
-  service           = "cloud-object-storage"
-  plan              = var.plan
-  location          = "global"
-  tags              = var.resource_tags
+module "bare_metal_servers" {
+  for_each = var.bare_metal_servers
+
+  source = "./modules/baremetal"
+
+  profile               = each.value.profile
+  prefix                = each.value.prefix
+  image                 = each.value.image
+  keys                  = each.value.keys
+  vpc_id                = var.vpc_id
+  subnets               = var.subnets
+  bms_per_subnet        = var.bms_per_subnet
+  allow_ip_spoofing     = var.allow_ip_spoofing
+  resource_group_id     = var.resource_group_id
+  tags                  = var.tags
+  access_tags           = var.access_tags
+  create_security_group = var.create_security_group
 }
