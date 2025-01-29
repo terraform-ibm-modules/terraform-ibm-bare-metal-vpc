@@ -152,7 +152,7 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_bare_metal_servers"></a> [bare\_metal\_servers](#output\_bare\_metal\_servers) | Details of the provisioned bare metal servers |
+| <a name="output_bare_metal_servers"></a> [bare\_metal\_servers](#output\_bare\_metal\_servers) | Details of the bare metal servers |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->
