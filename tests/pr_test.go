@@ -10,6 +10,7 @@ import (
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
+const region = "us-south"
 
 // Ensure every example directory has a corresponding test
 // const advancedExampleDir = "examples/advanced"
@@ -21,6 +22,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
+		Region:        region,
 	})
 	return options
 }
