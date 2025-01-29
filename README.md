@@ -141,7 +141,7 @@ No resources.
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the BMS resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
 | <a name="input_allow_ip_spoofing"></a> [allow\_ip\_spoofing](#input\_allow\_ip\_spoofing) | Whether to allow IP spoofing on the network interface | `string` | n/a | yes |
 | <a name="input_bare_metal_servers"></a> [bare\_metal\_servers](#input\_bare\_metal\_servers) | Configuration for bare metal servers | <pre>map(object({<br/>    profile = string<br/>    prefix  = string<br/>    image   = string<br/>    zone    = string<br/>    keys    = list(string)<br/>  }))</pre> | n/a | yes |
-| <a name="input_bms_per_subnet"></a> [bms\_per\_subnet](#input\_bms\_per\_subnet) | Number Baremetal Servers for each subnet | `number` | n/a | yes |
+| <a name="input_bms_count"></a> [bms\_count](#input\_bms\_count) | The number of bare metal server instances to be deployed. | `number` | n/a | yes |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Create security group for BMS. If this is passed as false, the default will be used | `bool` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of resource group to create BMS. | `string` | n/a | yes |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | A list of subnet IDs where BMS will be deployed | <pre>list(<br/>    object({<br/>      name = string<br/>      id   = string<br/>      zone = string<br/>      cidr = optional(string)<br/>    })<br/>  )</pre> | n/a | yes |

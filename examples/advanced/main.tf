@@ -71,7 +71,7 @@ module "slz_bms" {
   }
   subnets               = module.slz_vpc.subnet_zone_list
   vpc_id                = module.slz_vpc.vpc_id
-  bms_per_subnet        = 1
+  bms_count             = 1
   allow_ip_spoofing     = false
   resource_group_id     = module.resource_group.resource_group_id
   tags                  = ["test"]

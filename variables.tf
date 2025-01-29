@@ -64,7 +64,7 @@ variable "bare_metal_servers" {
   }))
 }
 
-variable "bms_per_subnet" {
-  description = "Number Baremetal Servers for each subnet"
+variable "bms_count" {
   type        = number
+  description = "The number of bare metal server instances to be deployed."
 }

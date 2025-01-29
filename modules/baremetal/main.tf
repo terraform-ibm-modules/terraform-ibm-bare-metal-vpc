@@ -3,28 +3,19 @@
 #############################################
 
 locals {
+  # Distribute BMS instances across subnets in a round-robin fashion
+  bms_list = [
+    for i in range(var.bms_count) : {
+      name        = "${var.prefix}-${i}"
+      bms_name    = "${var.prefix}-${substr(var.subnets[i % length(var.subnets)].id, -4, 4)}-${format("%03d", i + 1)}"
+      subnet_id   = var.subnets[i % length(var.subnets)].id
+      zone        = var.subnets[i % length(var.subnets)].zone
+      subnet_name = var.subnets[i % length(var.subnets)].name
+    }
+  ]
 
-  # Create list of BMS using subnets and BMS per subnet
-  bms_list = flatten([
-    # For each number in a range from 0 to BMS per subnet
-    for count in range(var.bms_per_subnet) : [
-      # For each subnet
-      for subnet in range(length(var.subnets)) :
-      {
-        name        = "${var.subnets[subnet].name}-${count}"
-        bms_name    = "${var.prefix}-${substr(var.subnets[subnet].id, -4, 4)}-${format("%03d", count + 1)}"
-        subnet_id   = var.subnets[subnet].id
-        zone        = var.subnets[subnet].zone
-        subnet_name = var.subnets[subnet].name
-      }
-    ]
-  ])
-
-  # Create map of BMS from list
-  bms_map = {
-    for server in local.bms_list :
-    server.name => server
-  }
+  # Create a map of BMS instances
+  bms_map = { for server in local.bms_list : server.name => server }
 }
 
 data "ibm_is_vpc" "vpc" {
@@ -54,7 +45,6 @@ resource "ibm_is_bare_metal_server" "bms" {
   access_tags    = var.access_tags
   resource_group = var.resource_group_id
 
-  # Primary Interface
   dynamic "primary_network_interface" {
     for_each = [1]
     content {

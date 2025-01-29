@@ -76,9 +76,9 @@ variable "manage_reserved_ips" {
   default     = false
 }
 
-variable "bms_per_subnet" {
+variable "bms_count" {
   type        = number
-  description = "The number of bare metal server instances to deploy in each subnet."
+  description = "The number of bare metal server instances to be deployed."
 }
 
 ################ Security Group #################

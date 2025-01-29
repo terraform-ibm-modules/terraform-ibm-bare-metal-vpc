@@ -13,7 +13,7 @@ module "bare_metal_servers" {
   keys                  = each.value.keys
   vpc_id                = var.vpc_id
   subnets               = var.subnets
-  bms_per_subnet        = var.bms_per_subnet
+  bms_count             = var.bms_count
   allow_ip_spoofing     = var.allow_ip_spoofing
   resource_group_id     = var.resource_group_id
   tags                  = var.tags
