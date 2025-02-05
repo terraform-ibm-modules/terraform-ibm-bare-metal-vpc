@@ -1,11 +1,11 @@
 resource "ibm_is_bare_metal_server" "bms" {
-  profile = var.profile
-  name    = var.prefix
-  image   = var.image
-  zone    = var.zone
-  keys    = var.ssh_key_id
-  vpc     = var.vpc_id
-  bandwidth = var.bandwidth
+  profile     = var.profile
+  name        = var.prefix
+  image       = var.image
+  zone        = var.zone
+  keys        = var.ssh_key_id
+  vpc         = var.vpc_id
+  bandwidth   = var.bandwidth
   access_tags = var.access_tags
 
   # Use primary_network_interface if no VLANs are needed
@@ -30,7 +30,7 @@ resource "ibm_is_bare_metal_server" "bms" {
 }
 
 resource "ibm_is_virtual_network_interface" "bms" {
-  count  = length(var.subnet_id)  # Create one VNI per subnet
+  count  = length(var.subnet_id) # Create one VNI per subnet
   name   = "vni-${var.prefix}-${count.index}"
-  subnet = var.subnet_id[count.index]  # Assign subnet dynamically
+  subnet = var.subnet_id[count.index] # Assign subnet dynamically
 }

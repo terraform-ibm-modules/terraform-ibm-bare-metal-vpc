@@ -33,26 +33,10 @@ variable "ssh_key_id" {
   type        = list(string)
 }
 
-variable "reservation_pool_id" {
-  description = "The ID of the reservation pool to use for the bare metal server."
-  type        = string
-  default     = null
-}
-
 variable "bandwidth" {
   description = "The bandwidth for the bare metal server."
   type        = number
   default     = null
-}
-
-variable "primary_ip" {
-  description = "The primary IP configuration for the bare metal server."
-  type = object({
-    auto_delete = bool
-    name        = string
-    address     = string
-  })
-  default = null
 }
 
 variable "allowed_vlans" {

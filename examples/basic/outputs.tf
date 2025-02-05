@@ -12,7 +12,3 @@ output "bare_metal_server_names" {
   value       = module.slz_baremetal.bare_metal_server_names
 }
 */
-
-output "mz" {
-  value = module.slz_vpc.subnet_zone_list
-}
