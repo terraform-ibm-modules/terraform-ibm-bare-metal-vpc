@@ -40,6 +40,7 @@ variable "server_count" {
 variable "vpc_name" {
   type        = string
   description = "The name of the IBM Cloud Virtual Private Cloud (VPC) where the servers will be deployed."
+  default     = "vpc"
 }
 
 variable "ssh_key" {
