@@ -4,47 +4,46 @@
 
 variable "ibmcloud_api_key" {
   type        = string
-  description = "The IBM Cloud API Key."
+  description = "The IBM Cloud API Key required for authentication and provisioning resources. This is sensitive information and should be kept secure."
   sensitive   = true
 }
 
 variable "region" {
   type        = string
-  description = "Region to provision all resources created by this example."
+  description = "The IBM Cloud region where all resources will be deployed. Example values: 'us-south', 'eu-gb', 'au-syd'."
 }
 
 variable "resource_group" {
   type        = string
-  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
+  description = "The name of an existing IBM Cloud resource group to use for this deployment. If left unset, a new resource group will be created automatically."
   default     = null
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources"
+  description = "A prefix to be appended to all resource names for easy identification and organization."
   type        = string
   default     = "slz-vsi"
 }
 
 variable "resource_tags" {
-  description = "List of Tags for the resource created"
+  description = "A list of tags to associate with the created resources for better categorization and management."
   type        = list(string)
   default     = null
 }
 
 variable "server_count" {
-  description = "Number of bare metal servers to provision"
+  description = "The number of IBM Cloud Bare Metal Servers to provision as part of this deployment."
   type        = number
   default     = 1
 }
 
 variable "vpc_name" {
   type        = string
-  description = "Name for VPC"
-  default     = "vpc"
+  description = "The name of the IBM Cloud Virtual Private Cloud (VPC) where the servers will be deployed."
 }
 
 variable "ssh_key" {
-  description = "SSH Key name (if existing) or null to create a new one"
+  description = "The name of an existing SSH key to be used for secure access to the servers. If left null, a new SSH key will be created automatically."
   type        = string
   default     = null
 }

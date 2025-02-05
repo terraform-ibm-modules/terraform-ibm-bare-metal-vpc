@@ -138,17 +138,17 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | List of access management tags to attach to the bare metal server. | `list(string)` | `[]` | no |
-| <a name="input_allowed_vlans"></a> [allowed\_vlans](#input\_allowed\_vlans) | List of allowed VLANs for the bare metal server. | `list(number)` | `[]` | no |
-| <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The bandwidth for the bare metal server. | `number` | `null` | no |
-| <a name="input_image"></a> [image](#input\_image) | The ID of the image to use for the bare metal server. | `string` | `"r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"` | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | Name of the bare metal server. If multiple instances are created, an index will be appended. | `string` | `"demo-bms"` | no |
-| <a name="input_profile"></a> [profile](#input\_profile) | The profile to use for the bare metal server. | `string` | `"bx3-metal-48x256"` | no |
-| <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Number of bare metal server instances to create. | `number` | `1` | no |
-| <a name="input_ssh_key_id"></a> [ssh\_key\_id](#input\_ssh\_key\_id) | List of SSH key IDs for authentication | `list(string)` | n/a | yes |
-| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | List of Subnet IDs to associate with the Bare Metal Server(s) | `list(string)` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of VPC | `string` | n/a | yes |
-| <a name="input_zone"></a> [zone](#input\_zone) | The zone where the bare metal server will be provisioned. | `string` | `"us-south-1"` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access management tags to be attached to the bare metal server for categorization and policy enforcement. | `list(string)` | `[]` | no |
+| <a name="input_allowed_vlans"></a> [allowed\_vlans](#input\_allowed\_vlans) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. | `list(number)` | `[]` | no |
+| <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
+| <a name="input_image"></a> [image](#input\_image) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | `"r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | `"demo-bms"` | no |
+| <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | `"bx3-metal-48x256"` | no |
+| <a name="input_server_count"></a> [server\_count](#input\_server\_count) | The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned. | `number` | `1` | no |
+| <a name="input_ssh_key_id"></a> [ssh\_key\_id](#input\_ssh\_key\_id) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
+| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The unique identifier of the IBM Cloud Virtual Private Cloud (VPC) where the bare metal server will be provisioned. | `string` | n/a | yes |
+| <a name="input_zone"></a> [zone](#input\_zone) | The IBM Cloud availability zone where the bare metal server will be deployed. | `string` | `"us-south-1"` | no |
 
 ### Outputs
 
