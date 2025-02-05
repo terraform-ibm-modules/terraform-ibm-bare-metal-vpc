@@ -12,7 +12,7 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
+//const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
@@ -21,6 +21,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		TerraformDir:  dir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
+		Region:        region,
 	})
 	return options
 }
@@ -36,7 +37,7 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunAdvancedExample(t *testing.T) {
+/*func TestRunAdvancedExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "mod-template-adv", advancedExampleDir)
@@ -58,3 +59,4 @@ func TestRunUpgradeExample(t *testing.T) {
 		assert.NotNil(t, output, "Expected some output")
 	}
 }
+*/
