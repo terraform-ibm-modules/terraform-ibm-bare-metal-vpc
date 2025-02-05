@@ -64,7 +64,7 @@ module "slz_baremetal" {
   prefix        = "slz-bms"
   profile       = "bx3-metal-48x256"
   image         = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
-  zone          = "eu-de-1"
+  zone          = "eu-de-2"
   vpc_id        = module.slz_vpc.vpc_id
   subnet_id     = [module.slz_vpc.subnet_zone_list[each.key % length(module.slz_vpc.subnet_zone_list)].id]
   ssh_key_id    = [local.ssh_key_id]
