@@ -54,28 +54,17 @@ module "slz_vpc" {
 }
 
 #############################################################################
-# Placement group
-#############################################################################
-
-resource "ibm_is_placement_group" "placement_group" {
-  name           = "${var.prefix}-host-spread"
-  resource_group = module.resource_group.resource_group_id
-  strategy       = "host_spread"
-  tags           = var.resource_tags
-}
-
-#############################################################################
 # Provision VSI
 #############################################################################
 
 module "slz_baremetal" {
   source        = "../.."
   for_each      = { for idx in range(var.server_count) : idx => idx } # Ensures each server gets a unique key
-  server_count  = 1
+  server_count  = 3
   prefix        = "slz-bms"
   profile       = "bx3-metal-48x256"
   image         = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
-  zone          = "${var.region}-1"
+  zone          = "eu-de-1"
   vpc_id        = module.slz_vpc.vpc_id
   subnet_id     = [module.slz_vpc.subnet_zone_list[each.key % length(module.slz_vpc.subnet_zone_list)].id]
   ssh_key_id    = [local.ssh_key_id]
