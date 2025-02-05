@@ -14,7 +14,7 @@ const resourceGroup = "geretain-test-resources"
 // Ensure every example directory has a corresponding test
 // const advancedExampleDir = "examples/advanced"
 const basicExampleDir = "examples/basic"
-const region = "us-south"
+const region = "eu-de"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{

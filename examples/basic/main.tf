@@ -74,7 +74,7 @@ module "slz_baremetal" {
   server_count  = 1
   prefix        = "slz-bms"
   profile       = "bx3-metal-48x256"
-  image         = "r006-cf915612-e159-4f82-b871-34f6eabfe05c"
+  image         = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
   zone          = "${var.region}-1"
   vpc_id        = module.slz_vpc.vpc_id
   subnet_id     = [module.slz_vpc.subnet_zone_list[each.key % length(module.slz_vpc.subnet_zone_list)].id]
