@@ -11,25 +11,25 @@ variable "server_count" {
 variable "prefix" {
   description = "Name of the bare metal server. If multiple instances are created, an index will be appended."
   type        = string
-  default     = "example-bms"
+  default     = "demo-bms"
 }
 
 variable "profile" {
   description = "The profile to use for the bare metal server."
   type        = string
-  default     = "mx2d-metal-32x192"
+  default     = "bx3-metal-48x256"
 }
 
 variable "image" {
   description = "The ID of the image to use for the bare metal server."
   type        = string
-  default     = "r134-31c8ca90-2623-48d7-8cf7-737be6fc4c3e"
+  default     = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
 }
 
 variable "zone" {
   description = "The zone where the bare metal server will be provisioned."
   type        = string
-  default     = "us-south-3"
+  default     = "us-south-1"
 }
 
 variable "bandwidth" {

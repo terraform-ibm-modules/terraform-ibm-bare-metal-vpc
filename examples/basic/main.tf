@@ -59,8 +59,8 @@ module "slz_vpc" {
 
 module "slz_baremetal" {
   source        = "../.."
-  for_each      = { for idx in range(var.server_count) : idx => idx } # Ensures each server gets a unique key
-  server_count  = 3
+  for_each      = { for idx in range(var.server_count) : idx => idx }
+  server_count  = 2
   prefix        = "slz-bms"
   profile       = "bx3-metal-48x256"
   image         = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
