@@ -1,6 +1,11 @@
 ########################################################################################################################
 # Input Variables
 ########################################################################################################################
+variable "resource_group_id" {
+  type        = string
+  description = "ID of the resource group where you want to create the service."
+  default     = null
+}
 
 variable "server_count" {
   description = "The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned."
@@ -55,12 +60,12 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "ssh_key_id" {
+variable "ssh_key_ids" {
   description = "A list of SSH key IDs that will be used for secure access to the bare metal server."
   type        = list(string)
 }
 
-variable "subnet_id" {
+variable "subnet_ids" {
   description = "A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation."
   type        = list(string)
 }

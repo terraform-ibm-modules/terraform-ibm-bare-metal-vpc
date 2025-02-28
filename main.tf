@@ -1,14 +1,29 @@
+data "ibm_is_subnet" "selected" {
+  for_each   = toset(var.subnet_ids) # Convert list to a set for iteration
+  identifier = each.key
+}
+
+locals {
+  baremetal_servers = { for idx in range(var.server_count) : idx => {
+    prefix     = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
+    subnet_id  = var.subnet_ids[idx % length(var.subnet_ids)]
+    zone       = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
+  }}
+}
+
 module "baremetal" {
-  source        = "./modules/baremetal"
-  for_each      = { for idx in range(var.server_count) : idx => idx }
-  prefix        = var.server_count == 1 ? var.prefix : "${var.prefix}-${each.key}"
-  profile       = var.profile
-  image         = var.image
-  zone          = var.zone
-  vpc_id        = var.vpc_id
-  subnet_id     = var.subnet_id
-  ssh_key_id    = var.ssh_key_id
-  bandwidth     = var.bandwidth
-  allowed_vlans = var.allowed_vlans
-  access_tags   = var.access_tags
+  source            = "./modules/baremetal"
+  for_each          = local.baremetal_servers
+
+  prefix            = each.value.prefix
+  profile           = var.profile
+  image             = var.image
+  subnet_id         = each.value.subnet_id
+  zone              = each.value.zone
+  vpc_id            = var.vpc_id
+  ssh_key_ids       = var.ssh_key_ids
+  bandwidth         = var.bandwidth
+  allowed_vlans     = var.allowed_vlans
+  access_tags       = var.access_tags
+  resource_group_id = var.resource_group_id
 }

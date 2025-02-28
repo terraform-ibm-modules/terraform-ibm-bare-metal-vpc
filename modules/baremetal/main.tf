@@ -1,14 +1,15 @@
 resource "ibm_is_bare_metal_server" "bms" {
-  profile     = var.profile
-  name        = var.prefix
-  image       = var.image
-  zone        = var.zone
-  keys        = var.ssh_key_id
-  vpc         = var.vpc_id
-  bandwidth   = var.bandwidth
-  access_tags = var.access_tags
+  profile        = var.profile
+  name           = var.prefix
+  image          = var.image
+  zone           = var.zone
+  keys           = var.ssh_key_ids
+  vpc            = var.vpc_id
+  bandwidth      = var.bandwidth
+  access_tags    = var.access_tags
+  resource_group = var.resource_group_id
 
-  # Use primary_network_interface if no VLANs are needed
+  # Attach subnet if VLANs are **not** provided
   dynamic "primary_network_interface" {
     for_each = length(var.allowed_vlans) == 0 ? [1] : []
     content {
@@ -16,7 +17,7 @@ resource "ibm_is_bare_metal_server" "bms" {
     }
   }
 
-  # Use primary_network_attachment if VLANs are required
+  # Attach VLANs if they are provided
   dynamic "primary_network_attachment" {
     for_each = length(var.allowed_vlans) > 0 ? [1] : []
     content {
@@ -29,8 +30,9 @@ resource "ibm_is_bare_metal_server" "bms" {
   }
 }
 
+# Create Virtual Network Interface (VNI) only if VLANs are provided
 resource "ibm_is_virtual_network_interface" "bms" {
-  count  = length(var.subnet_id) # Create one VNI per subnet
-  name   = "vni-${var.prefix}-${count.index}"
-  subnet = var.subnet_id[count.index] # Assign subnet dynamically
+  count  = length(var.allowed_vlans) > 0 ? 1 : 0 # Only create when VLANs exist
+  name   = "vni-${var.prefix}"
+  subnet = var.subnet_id
 }

@@ -3,6 +3,12 @@ variable "prefix" {
   type        = string
 }
 
+variable "resource_group_id" {
+  type        = string
+  description = "ID of the resource group where you want to create the service."
+  default     = null
+}
+
 variable "profile" {
   description = "The hardware profile defining the CPU, memory, and storage configuration of the bare metal server."
   type        = string
@@ -25,10 +31,10 @@ variable "vpc_id" {
 
 variable "subnet_id" {
   description = "A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation."
-  type        = list(string)
+  type        = string
 }
 
-variable "ssh_key_id" {
+variable "ssh_key_ids" {
   description = "A list of SSH key IDs that will be used for secure access to the bare metal server."
   type        = list(string)
 }
