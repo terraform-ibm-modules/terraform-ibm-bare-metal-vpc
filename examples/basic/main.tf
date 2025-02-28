@@ -1,6 +1,14 @@
-########################################################################################################################
-# Resource group
-########################################################################################################################
+##############################################################################
+# Locals
+##############################################################################
+
+locals {
+  ssh_key_id = var.ssh_key != null ? data.ibm_is_ssh_key.existing_ssh_key[0].id : resource.ibm_is_ssh_key.ssh_key[0].id
+}
+
+##############################################################################
+# Resource Group
+##############################################################################
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
@@ -10,22 +18,57 @@ module "resource_group" {
   existing_resource_group_name = var.resource_group
 }
 
-########################################################################################################################
-# COS
-########################################################################################################################
+##############################################################################
+# Create new SSH key
+##############################################################################
 
-#
-# Developer tips:
-#   - Call the local module / modules in the example to show how they can be consumed
-#   - include the actual module source as a code comment like below so consumers know how to consume from correct location
-#
+resource "tls_private_key" "tls_key" {
+  count     = var.ssh_key != null ? 0 : 1
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
 
-module "cos" {
-  source = "../.."
-  # remove the above line and uncomment the below 2 lines to consume the module from the registry
-  # source            = "terraform-ibm-modules/<replace>/ibm"
-  # version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  name              = "${var.prefix}-cos"
+resource "ibm_is_ssh_key" "ssh_key" {
+  count      = var.ssh_key != null ? 0 : 1
+  name       = "${var.prefix}-ssh-key"
+  public_key = resource.tls_private_key.tls_key[0].public_key_openssh
+}
+
+data "ibm_is_ssh_key" "existing_ssh_key" {
+  count = var.ssh_key != null ? 1 : 0
+  name  = var.ssh_key
+}
+
+#############################################################################
+# Provision VPC
+#############################################################################
+
+module "slz_vpc" {
+  source            = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version           = "7.19.1"
   resource_group_id = module.resource_group.resource_group_id
-  resource_tags     = var.resource_tags
+  region            = var.region
+  prefix            = var.prefix
+  tags              = var.resource_tags
+  name              = var.vpc_name
+}
+
+#############################################################################
+# Provision VSI
+#############################################################################
+
+module "slz_baremetal" {
+  source       = "../.."
+  for_each     = { for idx in range(var.server_count) : idx => idx }
+  server_count = 1
+  prefix       = "slz-bms"
+  profile      = "cx2-metal-96x192"
+  image        = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
+  vpc_id       = module.slz_vpc.vpc_id
+  #Selecting EU-GB zone-1 for baremetal provisioning due to Quota availabilty
+  subnet_ids    = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
+  ssh_key_ids   = [local.ssh_key_id]
+  bandwidth     = 100000
+  allowed_vlans = ["100", "102"]
+  access_tags   = null
 }

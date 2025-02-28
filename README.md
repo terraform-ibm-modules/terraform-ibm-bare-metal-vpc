@@ -26,8 +26,8 @@ TODO: Replace this with a description of the modules in this repo.
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
+* [Submodules](./modules)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
     * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
@@ -122,35 +122,39 @@ statement instead the previous block.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.71.2, < 2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.75.2, < 2.0.0 |
 
 ### Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_baremetal"></a> [baremetal](#module\_baremetal) | ./modules/baremetal | n/a |
 
 ### Resources
 
 | Name | Type |
 |------|------|
-| [ibm_resource_instance.cos_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
+| [ibm_is_subnet.selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 
 ### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_name"></a> [name](#input\_name) | A descriptive name used to identify the resource instance. | `string` | n/a | yes |
-| <a name="input_plan"></a> [plan](#input\_plan) | The name of the plan type supported by service. | `string` | `"standard"` | no |
-| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The ID of the resource group where you want to create the service. | `string` | n/a | yes |
-| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | List of resource tag to associate with the instance. | `list(string)` | `[]` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access management tags to be attached to the bare metal server for categorization and policy enforcement. | `list(string)` | `[]` | no |
+| <a name="input_allowed_vlans"></a> [allowed\_vlans](#input\_allowed\_vlans) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. | `list(number)` | `[]` | no |
+| <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
+| <a name="input_image"></a> [image](#input\_image) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | `"r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | `"demo-bms"` | no |
+| <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | `"bx3-metal-48x256"` | no |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
+| <a name="input_server_count"></a> [server\_count](#input\_server\_count) | The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned. | `number` | `1` | no |
+| <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The unique identifier of the IBM Cloud Virtual Private Cloud (VPC) where the bare metal server will be provisioned. | `string` | n/a | yes |
 
 ### Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_account_id"></a> [account\_id](#output\_account\_id) | An alpha-numeric value identifying the account ID. |
-| <a name="output_crn"></a> [crn](#output\_crn) | The CRN of the resource instance. |
-| <a name="output_guid"></a> [guid](#output\_guid) | The GUID of the resource instance. |
-| <a name="output_id"></a> [id](#output\_id) | The unique identifier of the resource instance. |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->
