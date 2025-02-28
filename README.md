@@ -28,6 +28,7 @@ TODO: Replace this with a description of the modules in this repo.
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
 * [Submodules](./modules)
 * [Examples](./examples)
+    * [Basic example](./examples/advanced)
     * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
