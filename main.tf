@@ -5,15 +5,15 @@ data "ibm_is_subnet" "selected" {
 
 locals {
   baremetal_servers = { for idx in range(var.server_count) : idx => {
-    prefix     = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
-    subnet_id  = var.subnet_ids[idx % length(var.subnet_ids)]
-    zone       = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
-  }}
+    prefix    = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
+    subnet_id = var.subnet_ids[idx % length(var.subnet_ids)]
+    zone      = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
+  } }
 }
 
 module "baremetal" {
-  source            = "./modules/baremetal"
-  for_each          = local.baremetal_servers
+  source   = "./modules/baremetal"
+  for_each = local.baremetal_servers
 
   prefix            = each.value.prefix
   profile           = var.profile

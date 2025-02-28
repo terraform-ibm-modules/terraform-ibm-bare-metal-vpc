@@ -28,7 +28,6 @@ TODO: Replace this with a description of the modules in this repo.
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
 * [Submodules](./modules)
 * [Examples](./examples)
-    * [Basic example](./examples/advanced)
     * [Basic example](./examples/basic)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
@@ -123,6 +122,7 @@ statement instead the previous block.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.75.2, < 2.0.0 |
 
 ### Modules
 
@@ -132,7 +132,9 @@ statement instead the previous block.
 
 ### Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ibm_is_subnet.selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 
 ### Inputs
 
@@ -144,11 +146,11 @@ No resources.
 | <a name="input_image"></a> [image](#input\_image) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | `"r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | `"demo-bms"` | no |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | `"bx3-metal-48x256"` | no |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
 | <a name="input_server_count"></a> [server\_count](#input\_server\_count) | The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned. | `number` | `1` | no |
-| <a name="input_ssh_key_id"></a> [ssh\_key\_id](#input\_ssh\_key\_id) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
-| <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
+| <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The unique identifier of the IBM Cloud Virtual Private Cloud (VPC) where the bare metal server will be provisioned. | `string` | n/a | yes |
-| <a name="input_zone"></a> [zone](#input\_zone) | The IBM Cloud availability zone where the bare metal server will be deployed. | `string` | `"us-south-1"` | no |
 
 ### Outputs
 

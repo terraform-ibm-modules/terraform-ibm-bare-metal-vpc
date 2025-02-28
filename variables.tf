@@ -31,12 +31,6 @@ variable "image" {
   default     = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
 }
 
-variable "zone" {
-  description = "The IBM Cloud availability zone where the bare metal server will be deployed."
-  type        = string
-  default     = "us-south-1"
-}
-
 variable "bandwidth" {
   description = "The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply."
   type        = number

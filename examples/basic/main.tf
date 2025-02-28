@@ -58,13 +58,13 @@ module "slz_vpc" {
 #############################################################################
 
 module "slz_baremetal" {
-  source        = "../.."
-  for_each      = { for idx in range(var.server_count) : idx => idx }
-  server_count  = 1
-  prefix        = "slz-bms"
-  profile       = "cx2-metal-96x192"
-  image         = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
-  vpc_id        = module.slz_vpc.vpc_id
+  source       = "../.."
+  for_each     = { for idx in range(var.server_count) : idx => idx }
+  server_count = 1
+  prefix       = "slz-bms"
+  profile      = "cx2-metal-96x192"
+  image        = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
+  vpc_id       = module.slz_vpc.vpc_id
   #Selecting EU-GB zone-1 for baremetal provisioning due to Quota availabilty
   subnet_ids    = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
   ssh_key_ids   = [local.ssh_key_id]
