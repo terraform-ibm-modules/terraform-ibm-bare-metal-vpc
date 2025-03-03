@@ -1,5 +1,5 @@
 data "ibm_is_subnet" "selected" {
-  count     = length(var.subnet_ids) # Use count instead of for_each
+  count      = length(var.subnet_ids) # Use count instead of for_each
   identifier = var.subnet_ids[count.index]
 }
 
