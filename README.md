@@ -19,8 +19,11 @@ For information, see "Module names and descriptions" at
 https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
 -->
 
-TODO: Replace this with a description of the modules in this repo.
+The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Metal Servers for VPC in a flexible and scalable manner. It supports deploying single or multiple servers, dynamically distributing them across one or more subnets while ensuring each instance is uniquely named.
 
+- Automates complex bare metal deployments in IBM Cloud.
+- Ensures high availability with intelligent subnet selection.
+- Handles Terraform plan-time issues gracefully.
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
@@ -48,26 +51,19 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 
 ### Usage
 
-<!--
-Add an example of the use of the module in the following code block.
-
-Use real values instead of "var.<var_name>" or other placeholder values
-unless real values don't help users know what to change.
--->
-
 ```hcl
 terraform {
   required_version = ">= 1.9.0"
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
+      version = ">= 1.75.2, < 2.0.0"
     }
   }
 }
 
 locals {
-    region = "us-south"
+    region = "eu-gb"
 }
 
 provider "ibm" {
@@ -75,46 +71,39 @@ provider "ibm" {
   region           = local.region
 }
 
-module "module_template" {
-  source            = "terraform-ibm-modules/<replace>/ibm"
-  version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  region            = local.region
-  name              = "instance-name"
-  resource_group_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the actual ID of resource group to use
+module "slz_baremetal" {
+  source        = "../.."
+  for_each      = { for idx in range(var.server_count) : idx => idx }
+  server_count  = 1
+  prefix        = "slz-bms"
+  profile       = "cx2d-metal-96x192"
+  image         = "r018-d1e5615e-6fc8-47f9-bc0e-9b92a6572ed1"
+  vpc_id        = var.vpc_id
+  subnet_ids    = ["subnet-1.id","subnet-2.id"]
+  ssh_key_ids   = ["ssh_key.id"]
+  bandwidth     = 100000
+  allowed_vlans = ["100", "102"]
+  access_tags   = null
 }
 ```
 
-### Required access policies
+### Required IAM access policies
 
-<!-- PERMISSIONS REQUIRED TO RUN MODULE
-If this module requires permissions, uncomment the following block and update
-the sample permissions, following the format.
-Replace the 'Sample IBM Cloud' service and roles with applicable values.
-The required information can usually be found in the services official
-IBM Cloud documentation.
-To view all available service permissions, you can go in the
-console at Manage > Access (IAM) > Access groups and click into an existing group
-(or create a new one) and in the 'Access' tab click 'Assign access'.
--->
+You need the following permissions to run this module.
 
-<!--
-You need the following permissions to run this module:
-
-- Service
-    - **Resource group only**
-        - `Viewer` access on the specific resource group
-    - **Sample IBM Cloud** service
+- Account Management
+    - **Resource Group** service
+        - `Viewer` platform access
+- IAM Services
+    - **IBM Cloud Activity Tracker** service
         - `Editor` platform access
         - `Manager` service access
--->
-
-<!-- NO PERMISSIONS FOR MODULE
-If no permissions are required for the module, uncomment the following
-statement instead the previous block.
--->
-
-<!-- No permissions are needed to run this module.-->
-
+    - **IBM Cloud Monitoring** service
+        - `Editor` platform access
+        - `Manager` service access
+    - **IBM Cloud Object Storage** service
+        - `Editor` platform access
+        - `Manager` service access
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
