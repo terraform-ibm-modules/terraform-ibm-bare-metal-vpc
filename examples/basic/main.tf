@@ -62,7 +62,7 @@ module "slz_baremetal" {
   for_each     = { for idx in range(var.server_count) : idx => idx }
   server_count = 1
   prefix       = "slz-bms"
-  profile      = "cx2-metal-96x192"
+  profile      = "cx2d-metal-96x192"
   image        = "r018-d1e5615e-6fc8-47f9-bc0e-9b92a6572ed1"
   vpc_id       = module.slz_vpc.vpc_id
   #Selecting EU-GB zone-1 for baremetal provisioning due to Quota availabilty
