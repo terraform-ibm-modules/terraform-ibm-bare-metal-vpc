@@ -1,36 +1,65 @@
 ########################################################################################################################
 # Input Variables
 ########################################################################################################################
-
-#
-# Developer tips:
-#   - Below are some common module input variables
-#   - They should be updated for input variables applicable to the module being added
-#   - Use variable validation when possible
-#
-
-variable "name" {
-  type        = string
-  description = "A descriptive name used to identify the resource instance."
-}
-
-variable "plan" {
-  type        = string
-  description = "The name of the plan type supported by service."
-  default     = "standard"
-  validation {
-    condition     = contains(["standard", "cos-one-rate-plan"], var.plan)
-    error_message = "The specified pricing plan is not available. The following plans are supported: 'standard', 'cos-one-rate-plan'"
-  }
-}
-
 variable "resource_group_id" {
   type        = string
-  description = "The ID of the resource group where you want to create the service."
+  description = "ID of the resource group where you want to create the service."
+  default     = null
 }
 
-variable "resource_tags" {
-  type        = list(string)
-  description = "List of resource tag to associate with the instance."
+variable "server_count" {
+  description = "The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned."
+  type        = number
+  default     = 1
+}
+
+variable "prefix" {
+  description = "The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness."
+  type        = string
+  default     = "demo-bms"
+}
+
+variable "profile" {
+  description = "The hardware profile defining the CPU, memory, and storage configuration of the bare metal server."
+  type        = string
+  default     = "bx3-metal-48x256"
+}
+
+variable "image" {
+  description = "The unique identifier of the operating system image to be installed on the bare metal server."
+  type        = string
+  default     = "r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"
+}
+
+variable "bandwidth" {
+  description = "The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply."
+  type        = number
+  default     = null
+}
+
+variable "allowed_vlans" {
+  description = "A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control."
+  type        = list(number)
   default     = []
+}
+
+variable "access_tags" {
+  description = "A list of access management tags to be attached to the bare metal server for categorization and policy enforcement."
+  type        = list(string)
+  default     = []
+}
+
+variable "vpc_id" {
+  description = "The unique identifier of the IBM Cloud Virtual Private Cloud (VPC) where the bare metal server will be provisioned."
+  type        = string
+}
+
+variable "ssh_key_ids" {
+  description = "A list of SSH key IDs that will be used for secure access to the bare metal server."
+  type        = list(string)
+}
+
+variable "subnet_ids" {
+  description = "A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation."
+  type        = list(string)
 }
