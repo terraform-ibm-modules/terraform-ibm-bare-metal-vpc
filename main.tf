@@ -1,13 +1,13 @@
 data "ibm_is_subnet" "selected" {
-  for_each   = toset(var.subnet_ids) # Convert list to a set for iteration
-  identifier = each.key
+  count     = length(var.subnet_ids) # Use count instead of for_each
+  identifier = var.subnet_ids[count.index]
 }
 
 locals {
   baremetal_servers = { for idx in range(var.server_count) : idx => {
     prefix    = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
     subnet_id = var.subnet_ids[idx % length(var.subnet_ids)]
-    zone      = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
+    zone      = data.ibm_is_subnet.selected[idx % length(var.subnet_ids)].zone
   } }
 }
 
