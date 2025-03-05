@@ -21,6 +21,7 @@ The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Meta
 * [Examples](./examples)
     * [Basic example](./examples/advanced)
     * [Basic example](./examples/basic)
+    * [Basic example](./examples/upgrade)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -119,20 +120,24 @@ You need the following permissions to run this module.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access management tags to be attached to the bare metal server for categorization and policy enforcement. | `list(string)` | `[]` | no |
-| <a name="input_allowed_vlans"></a> [allowed\_vlans](#input\_allowed\_vlans) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. | `list(number)` | `[]` | no |
+| <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
-| <a name="input_image"></a> [image](#input\_image) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | `"r010-7aef85f6-5f06-49e4-a7b4-361baf4e9b88"` | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | `"demo-bms"` | no |
-| <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | `"bx3-metal-48x256"` | no |
+| <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
+| <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
-| <a name="input_server_count"></a> [server\_count](#input\_server\_count) | The number of bare metal server instances to create. If set to more than one, multiple instances will be provisioned. | `number` | `1` | no |
+| <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Specifies the number of bare metal server instances to provision. If greater than one, multiple instances will be created and distributed across the available subnets in a round-robin manner. For example, if the server count is 3 and there are 2 subnets, Server 1 and Server 3 will be deployed on Subnet 1, while Server 2 will be deployed on Subnet 2. | `number` | `1` | no |
 | <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
-| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The unique identifier of the IBM Cloud Virtual Private Cloud (VPC) where the bare metal server will be provisioned. | `string` | n/a | yes |
 
 ### Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_baremetal_servers"></a> [baremetal\_servers](#output\_baremetal\_servers) | The map of baremetal servers with their respective subnets and zones. |
+| <a name="output_server_count"></a> [server\_count](#output\_server\_count) | The number of servers to be created. |
+| <a name="output_subnet_details"></a> [subnet\_details](#output\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
+| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The list of subnet IDs passed to the root module. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 <!-- Leave this section as is so that your module has a link to local development environment set-up steps for contributors to follow -->

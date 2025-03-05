@@ -56,19 +56,19 @@ module "slz_vpc" {
 #############################################################################
 # Provision VSI
 #############################################################################
+data "ibm_is_image" "slz_vsi_image" {
+  name = "ibm-centos-stream-9-amd64-8"
+}
 
 module "slz_baremetal" {
-  source       = "../.."
-  for_each     = { for idx in range(var.server_count) : idx => idx }
-  server_count = 1
-  prefix       = "slz-bms"
-  profile      = "cx2d-metal-96x192"
-  image        = "r018-d1e5615e-6fc8-47f9-bc0e-9b92a6572ed1"
-  vpc_id       = module.slz_vpc.vpc_id
-  #Selecting EU-GB zone-1 for baremetal provisioning due to Quota availabilty
-  subnet_ids    = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
-  ssh_key_ids   = [local.ssh_key_id]
-  bandwidth     = 100000
-  allowed_vlans = ["100", "102"]
-  access_tags   = null
+  source           = "../.."
+  server_count     = 1
+  prefix           = var.prefix
+  profile          = var.profile
+  image_id         = data.ibm_is_image.slz_vsi_image.id
+  subnet_ids       = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
+  ssh_key_ids      = [local.ssh_key_id]
+  bandwidth        = 100000
+  allowed_vlan_ids = ["100", "102"]
+  access_tags      = null
 }

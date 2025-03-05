@@ -22,19 +22,13 @@ variable "resource_group" {
 variable "prefix" {
   description = "A prefix to be appended to all resource names for easy identification and organization."
   type        = string
-  default     = "slz-vsi"
+  default     = "slz-bms"
 }
 
 variable "resource_tags" {
   description = "A list of tags to associate with the created resources for better categorization and management."
   type        = list(string)
   default     = null
-}
-
-variable "server_count" {
-  description = "The number of IBM Cloud Bare Metal Servers to provision as part of this deployment."
-  type        = number
-  default     = 1
 }
 
 variable "vpc_name" {
@@ -47,4 +41,10 @@ variable "ssh_key" {
   description = "The name of an existing SSH key to be used for secure access to the servers. If left null, a new SSH key will be created automatically."
   type        = string
   default     = null
+}
+
+variable "profile" {
+  description = "The hardware profile defining the CPU, memory, and storage configuration of the bare metal server."
+  type        = string
+  default     = "cx2d-metal-96x192"
 }

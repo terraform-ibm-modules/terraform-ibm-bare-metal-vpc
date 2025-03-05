@@ -1,5 +1,5 @@
-variable "prefix" {
-  description = "The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness."
+variable "name" {
+  description = "The base name for the bare metal servers and its resources."
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "profile" {
   type        = string
 }
 
-variable "image" {
+variable "image_id" {
   description = "The unique identifier of the operating system image to be installed on the bare metal server."
   type        = string
 }
@@ -45,8 +45,8 @@ variable "bandwidth" {
   default     = null
 }
 
-variable "allowed_vlans" {
-  description = "A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control."
+variable "allowed_vlan_ids" {
+  description = "A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102]"
   type        = list(number)
   default     = []
 }

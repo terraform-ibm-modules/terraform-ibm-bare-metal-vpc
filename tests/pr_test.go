@@ -12,7 +12,8 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-// const advancedExampleDir = "examples/advanced"
+const advancedExampleDir = "examples/advanced"
+const upgradeExampleDir = "examples/upgrade"
 const basicExampleDir = "examples/basic"
 const region = "eu-gb"
 
@@ -31,9 +32,33 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "mod-template-basic", basicExampleDir)
+	options := setupOptions(t, "bms-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+}
+
+// Consistency test for the advanced example
+func TestRunAdvancedExample(t *testing.T) {
+
+	options := setupOptions(t, "bms-adv", advancedExampleDir)
+
+	output, err := options.RunTestUpgrade()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
+}
+
+// Consistency test for the upgrade example
+func TestRunUpgradeExample(t *testing.T) {
+
+	options := setupOptions(t, "bms-upg", upgradeExampleDir)
+
+	output, err := options.RunTestUpgrade()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
 }
