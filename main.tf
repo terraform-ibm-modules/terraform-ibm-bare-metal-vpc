@@ -1,20 +1,21 @@
+# Using data block, retreiving the details of the subnets.
 data "ibm_is_subnet" "selected" {
   count      = length(var.subnet_ids)
   identifier = var.subnet_ids[count.index]
 }
 
 locals {
-  # Generate a list of bare metal server configurations
+  # Generating a list of bare metal server configurations
   baremetal_server_list = flatten([
     for idx in range(var.server_count) : {
       prefix    = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
       subnet_id = var.subnet_ids[idx % length(var.subnet_ids)]
-      zone      = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
-      vpc       = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].vpc
+      zone      = data.ibm_is_subnet.selected[idx % length(data.ibm_is_subnet.selected)].zone
+      vpc       = data.ibm_is_subnet.selected[idx % length(data.ibm_is_subnet.selected)].vpc
     }
   ])
 
-  # Convert the list into a map where the server name is the key
+  # Converting the list into a map, using server name as key
   baremetal_servers = { for server in local.baremetal_server_list : server.prefix => server }
 }
 
