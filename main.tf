@@ -4,12 +4,18 @@ data "ibm_is_subnet" "selected" {
 }
 
 locals {
-  baremetal_servers = { for idx in range(var.server_count) : idx => {
-    prefix    = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
-    subnet_id = var.subnet_ids[idx % length(var.subnet_ids)]
-    zone      = data.ibm_is_subnet.selected[idx % length(var.subnet_ids)].zone
-    vpc       = data.ibm_is_subnet.selected[idx % length(var.subnet_ids)].vpc
-  } }
+  # Generate a list of bare metal server configurations
+  baremetal_server_list = flatten([
+    for idx in range(var.server_count) : {
+      prefix    = var.server_count == 1 ? var.prefix : "${var.prefix}-${idx}"
+      subnet_id = var.subnet_ids[idx % length(var.subnet_ids)]
+      zone      = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].zone
+      vpc       = data.ibm_is_subnet.selected[var.subnet_ids[idx % length(var.subnet_ids)]].vpc
+    }
+  ])
+
+  # Convert the list into a map where the server name is the key
+  baremetal_servers = { for server in local.baremetal_server_list : server.prefix => server }
 }
 
 module "baremetal" {

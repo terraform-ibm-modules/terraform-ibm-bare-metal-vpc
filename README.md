@@ -21,7 +21,7 @@ The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Meta
 * [Examples](./examples)
     * [Basic example](./examples/advanced)
     * [Basic example](./examples/basic)
-    * [Basic example](./examples/upgrade)
+    * [Basic example](./examples/multi-zone-deployment)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 

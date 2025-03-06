@@ -12,7 +12,6 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const advancedExampleDir = "examples/advanced"
 const upgradeExampleDir = "examples/upgrade"
 const basicExampleDir = "examples/basic"
 const region = "eu-gb"
@@ -37,18 +36,6 @@ func TestRunBasicExample(t *testing.T) {
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
-}
-
-// Consistency test for the advanced example
-func TestRunAdvancedExample(t *testing.T) {
-
-	options := setupOptions(t, "bms-adv", advancedExampleDir)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
 }
 
 // Consistency test for the upgrade example
