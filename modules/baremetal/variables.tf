@@ -56,3 +56,23 @@ variable "access_tags" {
   type        = list(string)
   default     = []
 }
+
+####### Timeout configurations ########
+
+variable "create_timeout" {
+  description = "Timeout for creating the bare metal server"
+  type        = string
+  default     = "60m"
+}
+
+variable "update_timeout" {
+  description = "Timeout for updating the bare metal server"
+  type        = string
+  default     = "60m"
+}
+
+variable "delete_timeout" {
+  description = "Timeout for deleting the bare metal server"
+  type        = string
+  default     = "60m"
+}

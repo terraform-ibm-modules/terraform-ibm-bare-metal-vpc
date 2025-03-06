@@ -28,6 +28,12 @@ resource "ibm_is_bare_metal_server" "bms" {
       allowed_vlans = var.allowed_vlan_ids
     }
   }
+
+  timeouts {
+    create = var.create_timeout
+    update = var.update_timeout
+    delete = var.delete_timeout
+  }
 }
 
 # Create Virtual Network Interface (VNI) only if VLANs are provided
