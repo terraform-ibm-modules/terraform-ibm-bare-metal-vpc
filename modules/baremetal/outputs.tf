@@ -1,9 +1,9 @@
-output "debug_baremetal_servers" {
-  description = "Debug output for baremetal servers."
-  value       = ibm_is_bare_metal_server.bms
+output "baremetal_servers_ids" {
+  description = "Output for baremetal servers."
+  value       = ibm_is_bare_metal_server.bms.id
 }
 
-output "debug_virtual_network_interfaces" {
-  description = "Debug output for virtual network interfaces."
-  value       = ibm_is_virtual_network_interface.bms
+output "baremetal_servers_name" {
+  description = "Output for virtual network interfaces."
+  value       = ibm_is_bare_metal_server.bms.name
 }

@@ -134,7 +134,7 @@ You need the following permissions to run this module.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_baremetal_servers"></a> [baremetal\_servers](#output\_baremetal\_servers) | The map of baremetal servers with their respective subnets and zones. |
+| <a name="output_baremetal_servers"></a> [baremetal\_servers](#output\_baremetal\_servers) | IDs and names of the provisioned bare metal servers |
 | <a name="output_server_count"></a> [server\_count](#output\_server\_count) | The number of servers to be created. |
 | <a name="output_subnet_details"></a> [subnet\_details](#output\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The list of subnet IDs passed to the root module. |

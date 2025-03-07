@@ -3,8 +3,14 @@
 ########################################################################################################################
 
 output "baremetal_servers" {
-  description = "The map of baremetal servers with their respective subnets and zones."
-  value       = local.baremetal_servers
+  value = {
+    for servers, key in module.baremetal :
+    servers => {
+      id   = key.baremetal_servers_ids
+      name = key.baremetal_servers_name
+    }
+  }
+  description = "IDs and names of the provisioned bare metal servers"
 }
 
 output "subnet_details" {
