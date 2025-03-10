@@ -15,5 +15,9 @@ VPC Deployment:
 - The VPC is assigned to the resource group and tagged for easy management.
 
 Bare Metal Server Provisioning:
-- Deploys single baremetal server on a selected zone.
+- Deploys 3 baremetal servers on a round-robin method.
+- Two subnets are selected on different zones.
+- Deploys first server on first subnet.
+- Deploys second server on second subnet.
+- The third baremetal server will be deployed on first subnet again.
 - Ensures proper connectivity with SSH keys, bandwidth allocation, and VLAN configurations.
