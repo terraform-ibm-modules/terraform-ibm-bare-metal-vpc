@@ -12,3 +12,8 @@ output "region" {
   description = "The region where the resources are being created."
   value       = var.region
 }
+
+output "baremetal_servers" {
+  value       = module.slz_baremetal.baremetal_servers
+  description = "List of Bare Metal Server IDs and Names"
+}

@@ -12,7 +12,7 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const upgradeExampleDir = "examples/upgrade"
+const upgradeExampleDir = "examples/multi-zone-deployment"
 const basicExampleDir = "examples/basic"
 const region = "eu-gb"
 

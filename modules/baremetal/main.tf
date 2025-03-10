@@ -38,7 +38,8 @@ resource "ibm_is_bare_metal_server" "bms" {
 
 # Create Virtual Network Interface (VNI) only if VLANs are provided
 resource "ibm_is_virtual_network_interface" "bms" {
-  count  = length(var.allowed_vlan_ids) > 0 ? 1 : 0 # Only create when VLANs exist
-  name   = "${var.name}-vni"
-  subnet = var.subnet_id
+  count          = length(var.allowed_vlan_ids) > 0 ? 1 : 0 # Only create when VLANs exist
+  name           = "${var.name}-vni"
+  subnet         = var.subnet_id
+  resource_group = var.resource_group_id
 }
