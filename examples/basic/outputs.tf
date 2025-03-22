@@ -1,38 +1,19 @@
-########################################################################################################################
-# Outputs
-########################################################################################################################
-
-#
-# Developer tips:
-#   - Include all relevant outputs from the modules being called in the example
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = module.cos.account_id
+output "vpc_id" {
+  description = "The ID of the VPC created by the slz_vpc module."
+  value       = module.slz_vpc.vpc_id
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = module.cos.account_id
+output "subnet_ids" {
+  description = "The list of subnet IDs created in the specified zone."
+  value       = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
 }
 
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = module.cos.id
+output "region" {
+  description = "The region where the resources are being created."
+  value       = var.region
 }
 
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = module.cos.crn
-}
-
-output "resource_group_name" {
-  description = "Resource group name."
-  value       = module.resource_group.resource_group_name
-}
-
-output "resource_group_id" {
-  description = "Resource group ID."
-  value       = module.resource_group.resource_group_id
+output "baremetal_servers" {
+  value       = module.slz_baremetal.baremetal_servers
+  description = "List of Bare Metal Server IDs and Names"
 }
