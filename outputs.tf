@@ -6,8 +6,9 @@ output "baremetal_servers" {
   value = {
     for servers, key in module.baremetal :
     servers => {
-      id   = key.baremetal_servers_ids
-      name = key.baremetal_servers_name
+      id   = key.baremetal_server_id
+      name = key.baremetal_server_name
+      ip   = key.baremetal_server_vni
     }
   }
   description = "IDs and names of the provisioned bare metal servers"

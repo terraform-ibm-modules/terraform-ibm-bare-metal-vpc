@@ -19,9 +19,9 @@ The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Meta
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
 * [Submodules](./modules)
 * [Examples](./examples)
-    * [Basic example](./examples/advanced)
+    * [Advanced example](./examples/advanced)
     * [Basic example](./examples/basic)
-    * [Basic example](./examples/multi-zone-deployment)
+    * [Multi-zone example](./examples/multi-zone-deployment)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -39,6 +39,10 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 ## terraform-ibm-bare-metal-vpc
 
 ### Usage
+
+### Deploy Single Host
+
+Creates a single BareMetal Server on the provided subnet.
 
 ```hcl
 terraform {
@@ -61,12 +65,54 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source        = "../.."
+  source        = "terraform-ibm-modules/terraform-ibm-bare-metal-vpc/ibm"
+  version       = "X.X.X" # Replace "X.X.X" with a release version to lock
   for_each      = { for idx in range(var.server_count) : idx => idx }
   server_count  = 1
   prefix        = "slz-bms"
   profile       = "cx2d-metal-96x192"
-  image         = "r018-d1e5615e-6fc8-47f9-bc0e-9b92a6572ed1"
+  image         = var.image_id
+  vpc_id        = var.vpc_id
+  subnet_ids    = ["subnet-1.id"]
+  ssh_key_ids   = ["ssh_key.id"]
+  bandwidth     = 100000
+  allowed_vlans = ["100", "102"]
+  access_tags   = null
+}
+```
+
+### Deploy Multiple Hosts
+
+Creates 3 BareMetal Server on the provided subnets in a round-robin method.
+
+```hcl
+terraform {
+  required_version = ">= 1.9.0"
+  required_providers {
+    ibm = {
+      source  = "IBM-Cloud/ibm"
+      version = ">= 1.75.2, < 2.0.0"
+    }
+  }
+}
+
+locals {
+    region = "eu-gb"
+}
+
+provider "ibm" {
+  ibmcloud_api_key = "XXXXXXXXXX"  # replace with apikey value
+  region           = local.region
+}
+
+module "slz_baremetal" {
+  source        = "terraform-ibm-modules/terraform-ibm-bare-metal-vpc/ibm"
+  version       = "X.X.X" # Replace "X.X.X" with a release version to lock
+  for_each      = { for idx in range(var.server_count) : idx => idx }
+  server_count  = 3
+  prefix        = "slz-bms"
+  profile       = "cx2d-metal-96x192"
+  image         = var.image_id
   vpc_id        = var.vpc_id
   subnet_ids    = ["subnet-1.id","subnet-2.id"]
   ssh_key_ids   = ["ssh_key.id"]
@@ -80,19 +126,15 @@ module "slz_baremetal" {
 
 You need the following permissions to run this module.
 
+## Required IAM access policies
+You need the following permissions to run this module.
+
 - Account Management
     - **Resource Group** service
         - `Viewer` platform access
 - IAM Services
-    - **IBM Cloud Activity Tracker** service
+    - **VPC Infrastructure Services** service
         - `Editor` platform access
-        - `Manager` service access
-    - **IBM Cloud Monitoring** service
-        - `Editor` platform access
-        - `Manager` service access
-    - **IBM Cloud Object Storage** service
-        - `Editor` platform access
-        - `Manager` service access
 
 <!-- The following content is automatically populated by the pre-commit hook -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

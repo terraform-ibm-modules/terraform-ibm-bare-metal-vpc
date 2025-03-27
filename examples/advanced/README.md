@@ -1,4 +1,4 @@
-# Basic example
+# Advanced example
 
 This Terraform configuration provisions IBM Cloud infrastructure, including a resource group, SSH key management, VPC, and Bare Metal Servers (BMS). It automates the setup, ensuring resources are dynamically created or reused based on input variables.
 
