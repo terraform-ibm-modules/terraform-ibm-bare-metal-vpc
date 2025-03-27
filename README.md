@@ -65,19 +65,18 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source        = "terraform-ibm-modules/terraform-ibm-bare-metal-vpc/ibm"
-  version       = "X.X.X" # Replace "X.X.X" with a release version to lock
-  for_each      = { for idx in range(var.server_count) : idx => idx }
-  server_count  = 1
-  prefix        = "slz-bms"
-  profile       = "cx2d-metal-96x192"
-  image         = var.image_id
-  vpc_id        = var.vpc_id
-  subnet_ids    = ["subnet-1.id"]
-  ssh_key_ids   = ["ssh_key.id"]
-  bandwidth     = 100000
-  allowed_vlans = ["100", "102"]
-  access_tags   = null
+  source            = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
+  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
+  server_count      = 1
+  name              = "slz-bms"
+  profile           = "cx2d-metal-96x192"
+  image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_id         = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
+  ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth         = 100000
+  allowed_vlan_ids  = ["100", "102"]
+  access_tags       = null
+  resource_group_id = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -106,19 +105,18 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source        = "terraform-ibm-modules/terraform-ibm-bare-metal-vpc/ibm"
-  version       = "X.X.X" # Replace "X.X.X" with a release version to lock
-  for_each      = { for idx in range(var.server_count) : idx => idx }
-  server_count  = 3
-  prefix        = "slz-bms"
-  profile       = "cx2d-metal-96x192"
-  image         = var.image_id
-  vpc_id        = var.vpc_id
-  subnet_ids    = ["subnet-1.id","subnet-2.id"]
-  ssh_key_ids   = ["ssh_key.id"]
-  bandwidth     = 100000
-  allowed_vlans = ["100", "102"]
-  access_tags   = null
+  source            = "terraform-ibm-modules/bare-metal-vpc/ibm"
+  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
+  server_count      = 3
+  prefix            = "slz-bms"
+  profile           = "cx2d-metal-96x192"
+  image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_ids        = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
+  ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth         = 100000
+  allowed_vlans_ids = ["100", "102"]
+  access_tags       = null
+  resource_group_id = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
