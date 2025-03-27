@@ -2,29 +2,30 @@
 # Outputs
 ########################################################################################################################
 
-#
-# Developer tips:
-#   - Below are some good practise sample outputs
-#   - They should be updated for outputs applicable to the module being added
-#   - Use variable validation when possible
-#
-
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "baremetal_servers" {
+  value = {
+    for servers, key in module.baremetal :
+    servers => {
+      bms_server_id   = key.baremetal_server_id
+      bms_server_name = key.baremetal_server_name
+      bms_server_ip   = key.baremetal_server_ip
+      bms_vni_id      = key.baremetal_server_vni_id
+    }
+  }
+  description = "IDs and names of the provisioned bare metal servers"
 }
 
-output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "subnet_details" {
+  description = "The details of the subnets selected for the baremetal servers."
+  value       = data.ibm_is_subnet.selected
 }
 
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
+output "server_count" {
+  description = "The number of servers to be created."
+  value       = var.server_count
 }
 
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+output "subnet_ids" {
+  description = "The list of subnet IDs passed to the root module."
+  value       = var.subnet_ids
 }
