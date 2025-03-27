@@ -10,10 +10,10 @@ output "baremetal_server_name" {
 
 output "baremetal_server_ip" {
   description = "Output for baremetal IP address."
-  value       = ibm_is_virtual_network_interface.bms[0].primary_ip
+  value       = one(ibm_is_virtual_network_interface.bms[*].primary_ip[*].address)
 }
 
 output "baremetal_server_vni_id" {
   description = "Output for virtual network interface ID."
-  value       = ibm_is_virtual_network_interface.bms[0].id
+  value       = one(ibm_is_virtual_network_interface.bms[*].id)
 }
