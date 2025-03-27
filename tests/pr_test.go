@@ -12,7 +12,7 @@ import (
 const resourceGroup = "geretain-test-resources"
 
 // Ensure every example directory has a corresponding test
-const upgradeExampleDir = "examples/multi-zone-deployment"
+const upgradeExampleDir = "examples/basic"
 const basicExampleDir = "examples/basic"
 const region = "eu-gb"
 
@@ -29,7 +29,6 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 
 // Consistency test for the basic example
 func TestRunBasicExample(t *testing.T) {
-	t.Parallel()
 
 	options := setupOptions(t, "bms-basic", basicExampleDir)
 
