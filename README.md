@@ -43,7 +43,7 @@ https://terraform-ibm-modules.github.io/documentation/#/implementation-guideline
 
 ### Deploy Single Host
 
-Creates a single BareMetal Server on the provided subnet.
+Creates a single Bare Metal server on the provided subnet.
 
 ```hcl
 terraform {
@@ -51,7 +51,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = ">= 1.75.2, < 2.0.0"
+      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
     }
   }
 }
@@ -83,7 +83,7 @@ module "slz_baremetal" {
 
 ### Deploy Multiple Hosts
 
-Creates 3 BareMetal Server on the provided subnets in a round-robin method.
+Creates 3 Bare Metal servers on the provided subnets in a round-robin method.
 
 ```hcl
 terraform {
@@ -91,7 +91,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = ">= 1.75.2, < 2.0.0"
+      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
     }
   }
 }

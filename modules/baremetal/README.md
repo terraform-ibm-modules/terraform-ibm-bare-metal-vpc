@@ -2,7 +2,7 @@
 
 ### Usage
 
-Creates a single BareMetal Server on the provided subnet.
+Creates a single Bare Metal server on the provided subnet.
 
 ```hcl
 terraform {
@@ -10,7 +10,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = ">= 1.75.2, < 2.0.0"
+      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
     }
   }
 }
@@ -25,7 +25,7 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source            = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
+  source            = "terraform-ibm-modules/bare-metal-vpc/ibm//modules/baremetal"
   version           = "X.X.X" # Replace "X.X.X" with a release version to lock
   prefix            = "slz-bms"
   profile           = "cx2d-metal-96x192"
