@@ -18,6 +18,7 @@ The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Meta
 ## Overview
 * [terraform-ibm-bare-metal-vpc](#terraform-ibm-bare-metal-vpc)
 * [Submodules](./modules)
+    * [baremetal](./modules/baremetal)
 * [Examples](./examples)
     * [Advanced example](./examples/advanced)
     * [Basic example](./examples/basic)
@@ -119,10 +120,6 @@ module "slz_baremetal" {
   resource_group_id = "xxxxxxxxxxxxxxxxx"
 }
 ```
-
-### Required IAM access policies
-
-You need the following permissions to run this module.
 
 ## Required IAM access policies
 You need the following permissions to run this module.
