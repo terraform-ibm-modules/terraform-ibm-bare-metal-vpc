@@ -2,8 +2,6 @@
 
 ### Usage
 
-### Deploy Baremetal Server
-
 Creates a single BareMetal Server on the provided subnet.
 
 ```hcl
@@ -26,40 +24,35 @@ provider "ibm" {
   region           = local.region
 }
 
-```
-
-Use the below inputs for the .tfvars file
-
-```
-  name              = "slz-bms"
+module "slz_baremetal" {
+  source            = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
+  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
+  prefix            = "slz-bms"
   profile           = "cx2d-metal-96x192"
   image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
-  subnet_id         = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
+  subnet_ids        = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
   ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
   bandwidth         = 100000
-  allowed_vlan_ids  = ["100", "102"]
+  allowed_vlans_ids = ["100", "102"]
   access_tags       = null
-  resource_group_id = "xxxxxxxxxxxxxxxxx" # replace with resource group ID
+  resource_group_id = "xxxxxxxxxxxxxxxxx"
+}
 ```
 
-## Requirements
+ <!-- The following content is automatically populated by the pre-commit hook -->
+ <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.75.2, < 2.0.0 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_ibm"></a> [ibm](#provider\_ibm) | >= 1.75.2, < 2.0.0 |
-
-## Modules
+### Modules
 
 No modules.
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
@@ -67,7 +60,7 @@ No modules.
 | [ibm_is_virtual_network_interface.bms](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_virtual_network_interface) | resource |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -84,7 +77,7 @@ No modules.
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `string` | n/a | yes |
 | <a name="input_update_timeout"></a> [update\_timeout](#input\_update\_timeout) | Timeout for updating the bare metal server | `string` | `"60m"` | no |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
@@ -92,3 +85,4 @@ No modules.
 | <a name="output_baremetal_server_ip"></a> [baremetal\_server\_ip](#output\_baremetal\_server\_ip) | Output for baremetal IP address. |
 | <a name="output_baremetal_server_name"></a> [baremetal\_server\_name](#output\_baremetal\_server\_name) | Output for baremetal servers name. |
 | <a name="output_baremetal_server_vni_id"></a> [baremetal\_server\_vni\_id](#output\_baremetal\_server\_vni\_id) | Output for virtual network interface ID. |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
