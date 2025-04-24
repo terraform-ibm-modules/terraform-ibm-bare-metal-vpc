@@ -37,13 +37,15 @@ module "baremetal" {
   source   = "./modules/baremetal"
   for_each = local.bms_server_map
 
-  name              = each.value.prefix
-  profile           = var.profile
-  image_id          = var.image_id
-  subnet_id         = each.value.subnet_id
-  ssh_key_ids       = var.ssh_key_ids
-  bandwidth         = var.bandwidth
-  allowed_vlan_ids  = var.allowed_vlan_ids
-  access_tags       = var.access_tags
-  resource_group_id = var.resource_group_id
+  name               = each.value.prefix
+  profile            = var.profile
+  image_id           = var.image_id
+  subnet_id          = each.value.subnet_id
+  ssh_key_ids        = var.ssh_key_ids
+  security_group_ids = local.security_group_ids
+  bandwidth          = var.bandwidth
+  allowed_vlan_ids   = var.allowed_vlan_ids
+  user_data          = var.user_data
+  access_tags        = var.access_tags
+  resource_group_id  = var.resource_group_id
 }

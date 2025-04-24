@@ -66,3 +66,14 @@ variable "delete_timeout" {
   type        = string
   default     = "60m"
 }
+
+variable "user_data" {
+  description = "User data to initialize BMS deployment"
+  type        = string
+}
+
+variable "security_group_ids" {
+  description = "IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups."
+  type        = list(string)
+  default     = []
+}
