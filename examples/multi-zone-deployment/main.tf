@@ -61,15 +61,18 @@ data "ibm_is_image" "slz_vsi_image" {
 }
 
 module "slz_baremetal" {
-  source            = "../.."
-  server_count      = 3
-  prefix            = var.prefix
-  profile           = var.profile
-  image_id          = data.ibm_is_image.slz_vsi_image.id
-  subnet_ids        = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1" || subnet.zone == "${var.region}-2"]
-  ssh_key_ids       = [local.ssh_key_id]
-  bandwidth         = 100000
-  allowed_vlan_ids  = ["100", "102"]
-  access_tags       = null
-  resource_group_id = module.resource_group.resource_group_id
+  source                = "../.."
+  server_count          = 3
+  prefix                = var.prefix
+  profile               = var.profile
+  image_id              = data.ibm_is_image.slz_vsi_image.id
+  subnet_ids            = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1" || subnet.zone == "${var.region}-2"]
+  ssh_key_ids           = [local.ssh_key_id]
+  bandwidth             = 100000
+  allowed_vlan_ids      = ["100", "102"]
+  create_security_group = false
+  security_group_ids    = []
+  user_data             = null
+  access_tags           = null
+  resource_group_id     = module.resource_group.resource_group_id
 }

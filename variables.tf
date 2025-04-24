@@ -57,3 +57,57 @@ variable "subnet_ids" {
   nullable    = false
 
 }
+
+variable "tags" {
+  description = "List of tags to apply to resources created by this module."
+  type        = list(string)
+  default     = []
+}
+
+variable "create_security_group" {
+  description = "Create security group for BMS. If this is passed as false, the default will be used"
+  type        = bool
+}
+
+variable "security_group_ids" {
+  description = "IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups."
+  type        = list(string)
+  default     = []
+
+  validation {
+    error_message = "Security group IDs must be unique."
+    condition     = length(var.security_group_ids) == length(distinct(var.security_group_ids))
+  }
+
+  validation {
+    error_message = "No more than 5 security groups can be added to a BMS deployment."
+    condition     = length(var.security_group_ids) <= 5
+  }
+}
+
+variable "user_data" {
+  description = "User data to initialize BMS deployment"
+  type        = string
+}
+
+variable "security_group_rules" {
+  description = "List of security group rules to create"
+  type = list(object({
+    name      = string
+    direction = string
+    source    = string
+    tcp = optional(object({
+      port_min = number
+      port_max = number
+    }))
+    udp = optional(object({
+      port_min = number
+      port_max = number
+    }))
+    icmp = optional(object({
+      type = number
+      code = number
+    }))
+  }))
+  default = []
+}
