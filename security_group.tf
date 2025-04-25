@@ -8,63 +8,36 @@ data "ibm_is_subnet" "subnet" {
 }
 
 ##############################################################################
-# ibm_is_security_group - Create if requested with auto-generated name
+# Security Group Implementation using IBM Module
 ##############################################################################
 
 locals {
-  security_group_name = "bms-sg-${formatdate("YYYYMMDD-hhmmss", timestamp())}"
-}
 
-resource "ibm_is_security_group" "security_group" {
-  count = var.create_security_group ? 1 : 0
+  # Determine if we need to create a new security group
+  create_security_group = var.create_security_group
 
-  name           = local.security_group_name
-  resource_group = var.resource_group_id
-  vpc            = values(data.ibm_is_subnet.subnet)[0].vpc
-  tags           = var.tags
-  access_tags    = var.access_tags
-
-  lifecycle {
-    ignore_changes = [name]
-  }
+  # Final security group IDs
+  security_group_ids = distinct(compact(concat(
+    local.create_security_group ? [module.sg_group[0].security_group_id] : [],
+    var.security_group_ids,
+    (!local.create_security_group && length(var.security_group_ids) == 0) ? [data.ibm_is_vpc.vpc.default_security_group] : []
+  )))
 }
 
 ##############################################################################
-# Security Group Rules - Create if new SG is being created
+# IBM Security Group Module
 ##############################################################################
 
-resource "ibm_is_security_group_rule" "security_group_rules" {
-  for_each = var.create_security_group ? {
-    for rule in var.security_group_rules : rule.name => rule
-  } : {}
+module "sg_group" {
+  count   = local.create_security_group ? 1 : 0
+  source  = "terraform-ibm-modules/security-group/ibm"
+  version = "2.6.2"
 
-  group     = ibm_is_security_group.security_group[0].id
-  direction = each.value.direction
-  remote    = each.value.source
-
-  dynamic "icmp" {
-    for_each = each.value.icmp != null ? [each.value.icmp] : []
-    content {
-      type = icmp.value.type
-      code = icmp.value.code
-    }
-  }
-
-  dynamic "tcp" {
-    for_each = each.value.tcp != null ? [each.value.tcp] : []
-    content {
-      port_min = tcp.value.port_min
-      port_max = tcp.value.port_max
-    }
-  }
-
-  dynamic "udp" {
-    for_each = each.value.udp != null ? [each.value.udp] : []
-    content {
-      port_min = udp.value.port_min
-      port_max = udp.value.port_max
-    }
-  }
+  add_ibm_cloud_internal_rules = true
+  resource_group               = var.resource_group_id
+  security_group_name          = "${var.prefix}-sg"
+  vpc_id                       = values(data.ibm_is_subnet.subnet)[0].vpc
+  tags                         = var.tags
 }
 
 ##############################################################################
@@ -73,16 +46,4 @@ resource "ibm_is_security_group_rule" "security_group_rules" {
 
 data "ibm_is_vpc" "vpc" {
   identifier = values(data.ibm_is_subnet.subnet)[0].vpc
-}
-
-##############################################################################
-# Final Security Group IDs to use
-##############################################################################
-
-locals {
-  security_group_ids = distinct(compact(concat(
-    var.create_security_group ? [ibm_is_security_group.security_group[0].id] : [],
-    var.security_group_ids,
-    (!var.create_security_group && length(var.security_group_ids) == 0) ? [data.ibm_is_vpc.vpc.default_security_group] : []
-  )))
 }

@@ -70,9 +70,13 @@ module "slz_baremetal" {
   ssh_key_ids           = [local.ssh_key_id]
   bandwidth             = 100000
   allowed_vlan_ids      = ["100", "102"]
-  create_security_group = false
+  create_security_group = true
   security_group_ids    = []
-  user_data             = null
+  user_data             = <<-EOF
+    #!/bin/bash
+    echo "Provisioning BareMetal Server at $(date)"
+    echo "Hello from user_data!"
+  EOF
   access_tags           = null
   resource_group_id     = module.resource_group.resource_group_id
 }

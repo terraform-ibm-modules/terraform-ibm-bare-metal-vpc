@@ -65,8 +65,10 @@ variable "tags" {
 }
 
 variable "create_security_group" {
-  description = "Create security group for BMS. If this is passed as false, the default will be used"
+  description = "Setting to true will be create a new security group"
   type        = bool
+  default     = false
+  nullable    = false
 }
 
 variable "security_group_ids" {
@@ -88,26 +90,5 @@ variable "security_group_ids" {
 variable "user_data" {
   description = "User data to initialize BMS deployment"
   type        = string
-}
-
-variable "security_group_rules" {
-  description = "List of security group rules to create"
-  type = list(object({
-    name      = string
-    direction = string
-    source    = string
-    tcp = optional(object({
-      port_min = number
-      port_max = number
-    }))
-    udp = optional(object({
-      port_min = number
-      port_max = number
-    }))
-    icmp = optional(object({
-      type = number
-      code = number
-    }))
-  }))
-  default = []
+  default     = null
 }
