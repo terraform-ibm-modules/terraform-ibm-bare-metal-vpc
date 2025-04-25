@@ -36,6 +36,7 @@ module "sg_group" {
   add_ibm_cloud_internal_rules = true
   resource_group               = var.resource_group_id
   security_group_name          = "${var.prefix}-sg"
+  security_group_rules         = var.security_group_rules
   vpc_id                       = values(data.ibm_is_subnet.subnet)[0].vpc
   tags                         = var.tags
 }
