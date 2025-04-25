@@ -66,18 +66,21 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source            = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
-  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
-  server_count      = 1
-  name              = "slz-bms"
-  profile           = "cx2d-metal-96x192"
-  image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
-  subnet_id         = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
-  ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
-  bandwidth         = 100000
-  allowed_vlan_ids  = ["100", "102"]
-  access_tags       = null
-  resource_group_id = "xxxxxxxxxxxxxxxxx"
+  source                = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
+  version               = "X.X.X" # Replace "X.X.X" with a release version to lock
+  server_count          = 1
+  name                  = "slz-bms"
+  profile               = "cx2d-metal-96x192"
+  image_id              = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_id             = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
+  ssh_key_ids           = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth             = 100000
+  create_security_group = false
+  security_group_ids    = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
+  user_data             = "service httpd start"
+  allowed_vlan_ids      = ["100", "102"]
+  access_tags           = null
+  resource_group_id     = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -106,18 +109,21 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source            = "terraform-ibm-modules/bare-metal-vpc/ibm"
-  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
-  server_count      = 3
-  prefix            = "slz-bms"
-  profile           = "cx2d-metal-96x192"
-  image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
-  subnet_ids        = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
-  ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
-  bandwidth         = 100000
-  allowed_vlans_ids = ["100", "102"]
-  access_tags       = null
-  resource_group_id = "xxxxxxxxxxxxxxxxx"
+  source                = "terraform-ibm-modules/bare-metal-vpc/ibm"
+  version               = "X.X.X" # Replace "X.X.X" with a release version to lock
+  server_count          = 3
+  prefix                = "slz-bms"
+  profile               = "cx2d-metal-96x192"
+  image_id              = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_ids            = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
+  ssh_key_ids           = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth             = 100000
+  create_security_group = false
+  security_group_ids    = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
+  user_data             = "service httpd start"
+  allowed_vlans_ids     = ["100", "102"]
+  access_tags           = null
+  resource_group_id     = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -145,12 +151,15 @@ You need the following permissions to run this module.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_baremetal"></a> [baremetal](#module\_baremetal) | ./modules/baremetal | n/a |
+| <a name="module_sg_group"></a> [sg\_group](#module\_sg\_group) | terraform-ibm-modules/security-group/ibm | 2.6.2 |
 
 ### Resources
 
 | Name | Type |
 |------|------|
 | [ibm_is_subnet.selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
+| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
+| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
 
 ### Inputs
 
@@ -159,13 +168,18 @@ You need the following permissions to run this module.
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access management tags to be attached to the bare metal server for categorization and policy enforcement. | `list(string)` | `[]` | no |
 | <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
+| <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Setting to true will be create a new security group | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups. | `list(string)` | `[]` | no |
+| <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group | <pre>list(<br/>    object({<br/>      name      = string<br/>      direction = optional(string, "inbound")<br/>      remote    = string<br/>      tcp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      udp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      icmp = optional(<br/>        object({<br/>          type = optional(number)<br/>          code = optional(number)<br/>        })<br/>      )<br/>    })<br/>  )</pre> | `[]` | no |
 | <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Specifies the number of bare metal server instances to provision. If greater than one, multiple instances will be created and distributed across the available subnets in a round-robin manner. For example, if the server count is 3 and there are 2 subnets, Server 1 and Server 3 will be deployed on Subnet 1, while Server 2 will be deployed on Subnet 2. | `number` | `1` | no |
 | <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
+| <a name="input_user_data"></a> [user\_data](#input\_user\_data) | User data to initialize BMS deployment | `string` | `null` | no |
 
 ### Outputs
 

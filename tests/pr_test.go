@@ -29,7 +29,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 
 // Consistency test for the basic example
 func TestRunBasicExample(t *testing.T) {
-
+	t.Parallel()
 	options := setupOptions(t, "bms-basic", basicExampleDir)
 
 	output, err := options.RunTestConsistency()
@@ -39,7 +39,7 @@ func TestRunBasicExample(t *testing.T) {
 
 // Consistency test for the upgrade example
 func TestRunUpgradeExample(t *testing.T) {
-
+	t.Parallel()
 	options := setupOptions(t, "bms-upg", upgradeExampleDir)
 
 	output, err := options.RunTestUpgrade()
