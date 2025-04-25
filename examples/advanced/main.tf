@@ -77,6 +77,48 @@ module "slz_baremetal" {
     echo "Provisioning BareMetal Server at $(date)"
     echo "Hello from user_data!"
   EOF
-  access_tags           = null
-  resource_group_id     = module.resource_group.resource_group_id
+  security_group_rules = [
+    # TCP Rule Example
+    {
+      name      = "allow-http"
+      direction = "inbound"
+      remote    = "0.0.0.0/0"
+      tcp = {
+        port_min = 80
+        port_max = 80
+      }
+    },
+
+    # UDP Rule Example
+    {
+      name      = "allow-dns"
+      direction = "outbound"
+      remote    = "161.26.0.0/16"
+      udp = {
+        port_min = 53
+        port_max = 53
+      }
+    },
+
+    # ICMP Rule Example (ping)
+    {
+      name      = "allow-ping"
+      direction = "inbound"
+      remote    = "10.0.0.0/8"
+      icmp = {
+        type = 8
+      }
+    },
+
+    # Minimal Rule (defaults to inbound)
+    {
+      name   = "default-rule"
+      remote = "192.168.1.1/32"
+      tcp = {
+        port_min = 22
+      }
+    }
+  ]
+  access_tags       = null
+  resource_group_id = module.resource_group.resource_group_id
 }
