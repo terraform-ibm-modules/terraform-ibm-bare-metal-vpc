@@ -77,3 +77,27 @@ variable "security_group_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "secondary_vni_enabled" {
+  description = "Whether to enable a secondary virtual network interface"
+  type        = bool
+  default     = false
+}
+
+variable "secondary_subnet_id" {
+  description = "The ID of the secondary subnet"
+  type        = string
+  default     = ""
+}
+
+variable "secondary_security_group_ids" {
+  description = "List of security group IDs for the secondary VNI"
+  type        = list(string)
+  default     = null
+}
+
+variable "secondary_allowed_vlan_ids" {
+  description = "List of allowed VLAN IDs for the secondary VNI"
+  type        = list(number)
+  default     = null
+}
