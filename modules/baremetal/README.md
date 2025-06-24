@@ -25,17 +25,21 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source            = "terraform-ibm-modules/bare-metal-vpc/ibm//modules/baremetal"
-  version           = "X.X.X" # Replace "X.X.X" with a release version to lock
-  prefix            = "slz-bms"
-  profile           = "cx2d-metal-96x192"
-  image_id          = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
-  subnet_ids        = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
-  ssh_key_ids       = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
-  bandwidth         = 100000
-  allowed_vlans_ids = ["100", "102"]
-  access_tags       = null
-  resource_group_id = "xxxxxxxxxxxxxxxxx"
+  source                       = "terraform-ibm-modules/bare-metal-vpc/ibm//modules/baremetal"
+  version                      = "X.X.X" # Replace "X.X.X" with a release version to lock
+  prefix                       = "slz-bms"
+  profile                      = "cx2d-metal-96x192"
+  image_id                     = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_ids                   = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
+  ssh_key_ids                  = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth                    = 100000
+  allowed_vlans_ids            = ["100", "102"]
+  secondary_vni_enabled        = true
+  secondary_subnet_id          = "r022-d75gh796-b08a-4hje-a5aa-76hju84173d"
+  secondary_security_group_ids = ["r098-c76b3522-77aa-41ea-bbbf-76ct5416fbad"]
+  secondary_allowed_vlan_ids   = ["100", "102"]
+  access_tags                  = null
+  resource_group_id            = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
