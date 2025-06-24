@@ -75,11 +75,11 @@ module "slz_baremetal" {
   allowed_vlan_ids      = ["100", "102"]
 
   # Secondary VNI configuration not enabled for Basic Example
-  secondary_vni_enabled       = false
-  secondary_subnet_ids        = var.secondary_vni_enabled && var.secondary_subnet_ids != null ? var.secondary_subnet_ids : [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
+  secondary_vni_enabled        = false
+  secondary_subnet_ids         = var.secondary_vni_enabled && var.secondary_subnet_ids != null ? var.secondary_subnet_ids : [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
   secondary_security_group_ids = var.secondary_vni_enabled ? var.secondary_security_group_ids : []
-  secondary_allowed_vlan_ids  = var.secondary_vni_enabled ? var.secondary_allowed_vlan_ids : []
+  secondary_allowed_vlan_ids   = var.secondary_vni_enabled ? var.secondary_allowed_vlan_ids : []
 
-  access_tags           = null
-  resource_group_id     = module.resource_group.resource_group_id
-}  
+  access_tags       = null
+  resource_group_id = module.resource_group.resource_group_id
+}

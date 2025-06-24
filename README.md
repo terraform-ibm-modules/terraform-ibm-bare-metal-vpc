@@ -157,6 +157,7 @@ You need the following permissions to run this module.
 
 | Name | Type |
 |------|------|
+| [ibm_is_subnet.secondary_selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_subnet.selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
@@ -173,6 +174,10 @@ You need the following permissions to run this module.
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
+| <a name="input_secondary_allowed_vlan_ids"></a> [secondary\_allowed\_vlan\_ids](#input\_secondary\_allowed\_vlan\_ids) | List of allowed VLAN IDs for secondary VNIs | `list(number)` | `[]` | no |
+| <a name="input_secondary_security_group_ids"></a> [secondary\_security\_group\_ids](#input\_secondary\_security\_group\_ids) | List of security group IDs for secondary VNIs | `list(string)` | `[]` | no |
+| <a name="input_secondary_subnet_ids"></a> [secondary\_subnet\_ids](#input\_secondary\_subnet\_ids) | List of secondary subnet IDs (if empty, will use primary subnets) | `list(string)` | `[]` | no |
+| <a name="input_secondary_vni_enabled"></a> [secondary\_vni\_enabled](#input\_secondary\_vni\_enabled) | Whether to enable secondary virtual network interfaces | `bool` | `false` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups. | `list(string)` | `[]` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group | <pre>list(<br/>    object({<br/>      name      = string<br/>      direction = optional(string, "inbound")<br/>      remote    = string<br/>      tcp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      udp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      icmp = optional(<br/>        object({<br/>          type = optional(number)<br/>          code = optional(number)<br/>        })<br/>      )<br/>    })<br/>  )</pre> | `[]` | no |
 | <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Specifies the number of bare metal server instances to provision. If greater than one, multiple instances will be created and distributed across the available subnets in a round-robin manner. For example, if the server count is 3 and there are 2 subnets, Server 1 and Server 3 will be deployed on Subnet 1, while Server 2 will be deployed on Subnet 2. | `number` | `1` | no |
@@ -186,6 +191,7 @@ You need the following permissions to run this module.
 | Name | Description |
 |------|-------------|
 | <a name="output_baremetal_servers"></a> [baremetal\_servers](#output\_baremetal\_servers) | IDs and names of the provisioned bare metal servers |
+| <a name="output_secondary_subnet_details"></a> [secondary\_subnet\_details](#output\_secondary\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
 | <a name="output_server_count"></a> [server\_count](#output\_server\_count) | The number of servers to be created. |
 | <a name="output_subnet_details"></a> [subnet\_details](#output\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The list of subnet IDs passed to the root module. |
