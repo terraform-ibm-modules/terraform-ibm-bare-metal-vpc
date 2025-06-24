@@ -3,16 +3,16 @@ data "ibm_is_subnet" "subnet" {
 }
 
 resource "ibm_is_virtual_network_interface" "bms" {
-  count           = length(var.allowed_vlan_ids) > 0 ? 1 : 0 # Only create when VLANs exist
+  count           = length(var.allowed_vlan_ids) > 0 ? 1 : 0 
   name            = "${var.name}-vni"
   subnet          = var.subnet_id
   resource_group  = var.resource_group_id
   security_groups = var.security_group_ids
 }
 
-# Add this new resource for the secondary VNI
+# Secondary VNI
 resource "ibm_is_virtual_network_interface" "bms_secondary" {
-  count           = var.secondary_vni_enabled ? 1 : 0 # Create only if secondary_vni_enabled is true
+  count           = var.secondary_vni_enabled ? 1 : 0 
   name            = "${var.name}-secondary-vni"
   subnet          = var.secondary_subnet_id != "" ? var.secondary_subnet_id : var.subnet_id
   resource_group  = var.resource_group_id

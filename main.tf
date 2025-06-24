@@ -14,9 +14,9 @@ locals {
   # Generate server keys with stable subnet association
   bms_servers = [
     for idx in range(var.server_count) : {
-      key               = "server-${idx}" # Stable key based on server index
+      key               = "server-${idx}" 
       prefix            = "${var.prefix}-${idx}"
-      subnet_key        = "subnet-${idx % length(var.subnet_ids)}" # Consistent subnet mapping
+      subnet_key        = "subnet-${idx % length(var.subnet_ids)}" 
       subnet_id         = local.subnet_map["subnet-${idx % length(var.subnet_ids)}"]
       secondary_subnet_id = try(local.secondary_subnet_map["subnet-${idx % length(local.secondary_subnet_map)}"], null)
     }
@@ -59,13 +59,14 @@ module "baremetal" {
   security_group_ids = local.security_group_ids
   bandwidth          = var.bandwidth
   allowed_vlan_ids   = var.allowed_vlan_ids
-  user_data          = var.user_data
-  access_tags        = var.access_tags
-  resource_group_id  = var.resource_group_id
 
   # Secondary VNI parameters
   secondary_vni_enabled       = var.secondary_vni_enabled
   secondary_subnet_id         = each.value.secondary_subnet_id
   secondary_security_group_ids = var.secondary_security_group_ids
   secondary_allowed_vlan_ids  = var.secondary_allowed_vlan_ids
+
+  user_data          = var.user_data
+  access_tags        = var.access_tags
+  resource_group_id  = var.resource_group_id
 }

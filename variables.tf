@@ -87,6 +87,34 @@ variable "security_group_ids" {
   }
 }
 
+########################################################################################################################
+# Secondary VNI Variables
+########################################################################################################################
+
+variable "secondary_vni_enabled" {
+  description = "Whether to enable secondary virtual network interfaces"
+  type        = bool
+  default     = false
+}
+
+variable "secondary_subnet_ids" {
+  description = "List of secondary subnet IDs (if empty, will use primary subnets)"
+  type        = list(string)
+  default     = []
+}
+
+variable "secondary_security_group_ids" {
+  description = "List of security group IDs for secondary VNIs"
+  type        = list(string)
+  default     = []
+}
+
+variable "secondary_allowed_vlan_ids" {
+  description = "List of allowed VLAN IDs for secondary VNIs"
+  type        = list(number)
+  default     = []
+}
+
 ##############################################################################
 # Rule Variables
 ##############################################################################
@@ -163,34 +191,8 @@ variable "security_group_rules" {
   }
 }
 
-##############################################################################
-
 variable "user_data" {
   description = "User data to initialize BMS deployment"
   type        = string
   default     = null
-}
-
-variable "secondary_vni_enabled" {
-  description = "Whether to enable secondary virtual network interfaces"
-  type        = bool
-  default     = false
-}
-
-variable "secondary_subnet_ids" {
-  description = "List of secondary subnet IDs (if empty, will use primary subnets)"
-  type        = list(string)
-  default     = []
-}
-
-variable "secondary_security_group_ids" {
-  description = "List of security group IDs for secondary VNIs"
-  type        = list(string)
-  default     = []
-}
-
-variable "secondary_allowed_vlan_ids" {
-  description = "List of allowed VLAN IDs for secondary VNIs"
-  type        = list(number)
-  default     = []
 }

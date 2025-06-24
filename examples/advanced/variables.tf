@@ -48,3 +48,31 @@ variable "profile" {
   type        = string
   default     = "cx2d-metal-96x192"
 }
+
+########################################################################################################################
+# Secondary VNI Variables
+########################################################################################################################
+
+variable "secondary_vni_enabled" {
+  description = "Enable secondary virtual network interfaces"
+  type        = bool
+  default     = false
+}
+
+variable "secondary_subnet_ids" {
+  description = "List of secondary subnet IDs (defaults to primary subnets if not specified)"
+  type        = list(string)
+  default     = null
+}
+
+variable "secondary_security_group_ids" {
+  description = "List of security group IDs for secondary VNIs"
+  type        = list(string)
+  default     = []
+}
+
+variable "secondary_allowed_vlan_ids" {
+  description = "List of allowed VLAN IDs for secondary VNIs"
+  type        = list(string)
+  default     = []
+}

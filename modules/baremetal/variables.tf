@@ -78,6 +78,10 @@ variable "security_group_ids" {
   default     = []
 }
 
+########################################################################################################################
+# Secondary VNI Variables
+########################################################################################################################
+
 variable "secondary_vni_enabled" {
   description = "Whether to enable a secondary virtual network interface"
   type        = bool

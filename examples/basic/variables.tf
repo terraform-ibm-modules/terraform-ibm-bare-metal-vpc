@@ -49,6 +49,10 @@ variable "profile" {
   default     = "cx2d-metal-96x192"
 }
 
+########################################################################################################################
+# Secondary VNI Variables
+########################################################################################################################
+
 variable "secondary_vni_enabled" {
   description = "Enable secondary virtual network interfaces"
   type        = bool
