@@ -78,6 +78,8 @@ module "slz_baremetal" {
   create_security_group        = false
   security_group_ids           = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
   user_data                    = "service httpd start"
+  enable_secure_boot           = true
+  tpm_mode                     = "tpm_2"
   allowed_vlan_ids             = ["100", "102"]
   secondary_vni_enabled        = true
   secondary_subnet_id          = "r022-d75gh796-b08a-4hje-a5aa-76hju84173d"
