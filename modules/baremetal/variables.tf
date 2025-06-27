@@ -92,6 +92,7 @@ variable "secondary_subnet_id" {
   description = "The ID of the secondary subnet"
   type        = string
   default     = ""
+  nullable    = false
 }
 
 variable "secondary_security_group_ids" {
@@ -104,4 +105,16 @@ variable "secondary_allowed_vlan_ids" {
   description = "List of allowed VLAN IDs for the secondary VNI"
   type        = list(number)
   default     = null
+}
+
+variable "enable_secure_boot" {
+  description = "Indicates whether secure boot is enabled. If enabled, the image must support secure boot or the server will fail to boot."
+  type        = bool
+  default     = false
+}
+
+variable "tpm_mode" {
+  default     = "disabled"
+  description = "Trusted platform module (TPM) configuration for the bare metal server. For more details see [Secure Boot and TPM documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-secure-boot-tpm)"
+  type        = string
 }

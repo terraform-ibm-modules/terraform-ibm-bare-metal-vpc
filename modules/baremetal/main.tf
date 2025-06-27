@@ -20,16 +20,21 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
 }
 
 resource "ibm_is_bare_metal_server" "bms" {
-  profile        = var.profile
-  name           = var.name
-  image          = var.image_id
-  keys           = var.ssh_key_ids
-  vpc            = data.ibm_is_subnet.subnet.vpc
-  zone           = data.ibm_is_subnet.subnet.zone
-  bandwidth      = var.bandwidth
-  access_tags    = var.access_tags
-  resource_group = var.resource_group_id
-  user_data      = var.user_data
+  profile            = var.profile
+  name               = var.name
+  image              = var.image_id
+  keys               = var.ssh_key_ids
+  vpc                = data.ibm_is_subnet.subnet.vpc
+  zone               = data.ibm_is_subnet.subnet.zone
+  bandwidth          = var.bandwidth
+  access_tags        = var.access_tags
+  resource_group     = var.resource_group_id
+  user_data          = var.user_data
+  enable_secure_boot = var.enable_secure_boot
+
+  trusted_platform_module {
+    mode = var.tpm_mode
+  }
 
   # Attach subnet if VLANs are **not** provided
   dynamic "primary_network_interface" {

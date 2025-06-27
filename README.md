@@ -174,6 +174,7 @@ You need the following permissions to run this module.
 | <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Setting to true will be create a new security group | `bool` | `false` | no |
+| <a name="input_enable_secure_boot"></a> [enable\_secure\_boot](#input\_enable\_secure\_boot) | Indicates whether secure boot is enabled. If enabled, the image must support secure boot or the server will fail to boot. | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
@@ -188,6 +189,7 @@ You need the following permissions to run this module.
 | <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
+| <a name="input_tpm_mode"></a> [tpm\_mode](#input\_tpm\_mode) | Trusted platform module (TPM) configuration for the bare metal server. For more details see [Secure Boot and TPM documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-secure-boot-tpm) | `string` | `"disabled"` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | User data to initialize BMS deployment | `string` | `null` | no |
 
 ### Outputs

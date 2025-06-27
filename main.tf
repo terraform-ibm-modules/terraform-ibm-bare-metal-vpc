@@ -66,6 +66,9 @@ module "baremetal" {
   secondary_security_group_ids = var.secondary_security_group_ids
   secondary_allowed_vlan_ids   = var.secondary_allowed_vlan_ids
 
+  enable_secure_boot = var.enable_secure_boot
+  tpm_mode           = var.tpm_mode
+
   user_data         = var.user_data
   access_tags       = var.access_tags
   resource_group_id = var.resource_group_id
