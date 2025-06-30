@@ -117,4 +117,10 @@ variable "tpm_mode" {
   default     = "disabled"
   description = "Trusted platform module (TPM) configuration for the bare metal server. For more details see [Secure Boot and TPM documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-secure-boot-tpm)"
   type        = string
+  nullable    = false
+
+  validation {
+    condition     = contains(["disabled", "tpm_2"], var.tpm_mode)
+    error_message = "TPM mode must be either 'disabled' or 'tpm_2'."
+  }
 }
