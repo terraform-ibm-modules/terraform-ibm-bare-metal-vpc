@@ -46,5 +46,5 @@ variable "ssh_key" {
 variable "profile" {
   description = "The hardware profile defining the CPU, memory, and storage configuration of the bare metal server."
   type        = string
-  default     = "cx2d-metal-96x192"
+  default     = "bx2d-metal-96x384"
 }
