@@ -10,7 +10,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
+      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints. Use versions >= 1.80.3.
     }
   }
 }
