@@ -13,6 +13,11 @@ variable "region" {
   description = "The IBM Cloud region where all resources will be deployed. Example values: 'us-south', 'eu-gb', 'au-syd'."
 }
 
+variable "zone" {
+  type        = string
+  description = "The IBM Cloud region zone where all resources will be deployed. Example values: 'us-south-1', 'eu-gb-1', 'au-syd-1'."
+}
+
 variable "resource_group" {
   type        = string
   description = "The name of an existing IBM Cloud resource group to use for this deployment. If left unset, a new resource group will be created automatically."

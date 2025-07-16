@@ -94,7 +94,7 @@ module "slz_baremetal" {
   prefix                = var.prefix
   profile               = var.profile
   image_id              = data.ibm_is_image.slz_vsi_image.id
-  subnet_ids            = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"][0]]
+  subnet_ids            = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.zone}"][0]]
   ssh_key_ids           = [local.ssh_key_id]
   bandwidth             = 100000
   allowed_vlan_ids      = ["100", "102"]
@@ -152,7 +152,7 @@ module "slz_baremetal" {
 
   # Secondary VNI configuration Enabled for Basic Example
   secondary_vni_enabled = true
-  secondary_subnet_ids  = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"][1]]
+  secondary_subnet_ids  = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.zone}"][1]]
 
   access_tags       = null
   resource_group_id = module.resource_group.resource_group_id
