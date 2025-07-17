@@ -15,7 +15,7 @@ locals {
   bms_servers = [
     for idx in range(var.server_count) : {
       key                 = "server-${idx}"
-      prefix              = "${var.prefix}-${idx}"
+      prefix              = format("%s-%03d", var.prefix, idx + 1)
       subnet_key          = "subnet-${idx % length(var.subnet_ids)}"
       subnet_id           = local.subnet_map["subnet-${idx % length(var.subnet_ids)}"]
       secondary_subnet_id = try(local.secondary_subnet_map["subnet-${idx % length(local.secondary_subnet_map)}"], null)

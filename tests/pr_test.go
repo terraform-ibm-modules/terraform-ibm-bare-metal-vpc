@@ -15,8 +15,6 @@ const resourceGroup = "geretain-test-resources"
 const upgradeExampleDir = "examples/basic"
 const basicExampleDir = "examples/basic"
 const region = "eu-gb"
-const profile = "cx2d-metal-96x192"
-const zone = "eu-gb-1"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
@@ -25,9 +23,12 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 		Region:        region,
-		Profile:	   profile,
-		Zone:          zone,
+		TerraformVars: map[string]interface{}{
+			"profile": "cx2d-metal-96x192",
+			"zone":    "eu-gb-1",
+		},
 	})
+
 	return options
 }
 
