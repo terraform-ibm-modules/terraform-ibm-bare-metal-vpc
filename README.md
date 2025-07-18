@@ -51,7 +51,7 @@ terraform {
   required_providers {
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints
+      version = "X.Y.Z"  # Lock into a provider version that satisfies the module constraints. Use versions >= 1.80.3.
     }
   }
 }
@@ -66,21 +66,27 @@ provider "ibm" {
 }
 
 module "slz_baremetal" {
-  source                = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
-  version               = "X.X.X" # Replace "X.X.X" with a release version to lock
-  server_count          = 1
-  name                  = "slz-bms"
-  profile               = "cx2d-metal-96x192"
-  image_id              = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
-  subnet_id             = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
-  ssh_key_ids           = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
-  bandwidth             = 100000
-  create_security_group = false
-  security_group_ids    = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
-  user_data             = "service httpd start"
-  allowed_vlan_ids      = ["100", "102"]
-  access_tags           = null
-  resource_group_id     = "xxxxxxxxxxxxxxxxx"
+  source                       = "terraform-ibm-modules/bare-metal-vpc/ibm/modules/baremetal"
+  version                      = "X.X.X" # Replace "X.X.X" with a release version to lock
+  server_count                 = 1
+  name                         = "slz-bms"
+  profile                      = "cx2d-metal-96x192"
+  image_id                     = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
+  subnet_id                    = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
+  ssh_key_ids                  = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  bandwidth                    = 100000
+  create_security_group        = false
+  security_group_ids           = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
+  user_data                    = "service httpd start"
+  enable_secure_boot           = true
+  tpm_mode                     = "tpm_2"
+  allowed_vlan_ids             = ["100", "102"]
+  secondary_vni_enabled        = true
+  secondary_subnet_id          = "r022-d75gh796-b08a-4hje-a5aa-76hju84173d"
+  secondary_security_group_ids = ["r098-c76b3522-77aa-41ea-bbbf-76ct5416fbad"]
+  secondary_allowed_vlan_ids   = ["100", "102"]
+  access_tags                  = null
+  resource_group_id            = "xxxxxxxxxxxxxxxxx"
 }
 ```
 
@@ -144,7 +150,7 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.75.2, < 2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.80.3, < 2.0.0 |
 
 ### Modules
 
@@ -157,6 +163,7 @@ You need the following permissions to run this module.
 
 | Name | Type |
 |------|------|
+| [ibm_is_subnet.secondary_selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_subnet.selected](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
@@ -169,16 +176,22 @@ You need the following permissions to run this module.
 | <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Setting to true will be create a new security group | `bool` | `false` | no |
+| <a name="input_enable_secure_boot"></a> [enable\_secure\_boot](#input\_enable\_secure\_boot) | Indicates whether secure boot is enabled. If enabled, the image must support secure boot or the server will fail to boot. | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
+| <a name="input_secondary_allowed_vlan_ids"></a> [secondary\_allowed\_vlan\_ids](#input\_secondary\_allowed\_vlan\_ids) | List of allowed VLAN IDs for secondary VNIs | `list(number)` | `[]` | no |
+| <a name="input_secondary_security_group_ids"></a> [secondary\_security\_group\_ids](#input\_secondary\_security\_group\_ids) | List of security group IDs for secondary VNIs | `list(string)` | `[]` | no |
+| <a name="input_secondary_subnet_ids"></a> [secondary\_subnet\_ids](#input\_secondary\_subnet\_ids) | List of secondary subnet IDs (if empty, will use primary subnets) | `list(string)` | `[]` | no |
+| <a name="input_secondary_vni_enabled"></a> [secondary\_vni\_enabled](#input\_secondary\_vni\_enabled) | Whether to enable secondary virtual network interfaces | `bool` | `false` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | IDs of additional security groups to be added to BMS deployment primary interface. A BMS interface can have a maximum of 5 security groups. | `list(string)` | `[]` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group | <pre>list(<br/>    object({<br/>      name      = string<br/>      direction = optional(string, "inbound")<br/>      remote    = string<br/>      tcp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      udp = optional(<br/>        object({<br/>          port_max = optional(number)<br/>          port_min = optional(number)<br/>        })<br/>      )<br/>      icmp = optional(<br/>        object({<br/>          type = optional(number)<br/>          code = optional(number)<br/>        })<br/>      )<br/>    })<br/>  )</pre> | `[]` | no |
 | <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Specifies the number of bare metal server instances to provision. If greater than one, multiple instances will be created and distributed across the available subnets in a round-robin manner. For example, if the server count is 3 and there are 2 subnets, Server 1 and Server 3 will be deployed on Subnet 1, while Server 2 will be deployed on Subnet 2. | `number` | `1` | no |
 | <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
+| <a name="input_tpm_mode"></a> [tpm\_mode](#input\_tpm\_mode) | Trusted platform module (TPM) configuration for the bare metal server. For more details see [Secure Boot and TPM documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-secure-boot-tpm) | `string` | `"disabled"` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | User data to initialize BMS deployment | `string` | `null` | no |
 
 ### Outputs
@@ -186,6 +199,7 @@ You need the following permissions to run this module.
 | Name | Description |
 |------|-------------|
 | <a name="output_baremetal_servers"></a> [baremetal\_servers](#output\_baremetal\_servers) | IDs and names of the provisioned bare metal servers |
+| <a name="output_secondary_subnet_details"></a> [secondary\_subnet\_details](#output\_secondary\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
 | <a name="output_server_count"></a> [server\_count](#output\_server\_count) | The number of servers to be created. |
 | <a name="output_subnet_details"></a> [subnet\_details](#output\_subnet\_details) | The details of the subnets selected for the baremetal servers. |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The list of subnet IDs passed to the root module. |

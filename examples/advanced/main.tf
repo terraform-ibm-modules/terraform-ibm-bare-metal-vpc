@@ -6,6 +6,33 @@ locals {
   ssh_key_id = var.ssh_key != null ? data.ibm_is_ssh_key.existing_ssh_key[0].id : resource.ibm_is_ssh_key.ssh_key[0].id
 }
 
+locals {
+  subnets = {
+    zone-1 = [
+      {
+        name           = "${var.prefix}-subnet-z1a"
+        cidr           = "10.10.10.0/24"
+        public_gateway = true
+        acl_name       = "vpc-acl"
+      },
+      {
+        name           = "${var.prefix}-subnet-z1b"
+        cidr           = "10.10.20.0/24"
+        public_gateway = false
+        acl_name       = "vpc-acl"
+      }
+    ],
+    zone-2 = [
+      {
+        name           = "${var.prefix}-subnet-z2a"
+        cidr           = "10.20.10.0/24"
+        public_gateway = false
+        acl_name       = "vpc-acl"
+      }
+    ]
+  }
+}
+
 ##############################################################################
 # Resource Group
 ##############################################################################
@@ -51,6 +78,7 @@ module "slz_vpc" {
   prefix            = var.prefix
   tags              = var.resource_tags
   name              = var.vpc_name
+  subnets           = local.subnets
 }
 
 #############################################################################
@@ -66,7 +94,7 @@ module "slz_baremetal" {
   prefix                = var.prefix
   profile               = var.profile
   image_id              = data.ibm_is_image.slz_vsi_image.id
-  subnet_ids            = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-1"]
+  subnet_ids            = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-${var.zone}"][0]]
   ssh_key_ids           = [local.ssh_key_id]
   bandwidth             = 100000
   allowed_vlan_ids      = ["100", "102"]
@@ -77,6 +105,8 @@ module "slz_baremetal" {
     echo "Provisioning BareMetal Server at $(date)"
     echo "Hello from user_data!"
   EOF
+  enable_secure_boot    = true
+  tpm_mode              = "tpm_2"
   security_group_rules = [
     # TCP Rule Example
     {
@@ -119,6 +149,11 @@ module "slz_baremetal" {
       }
     }
   ]
+
+  # Secondary VNI configuration Enabled for Basic Example
+  secondary_vni_enabled = true
+  secondary_subnet_ids  = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-${var.zone}"][1]]
+
   access_tags       = null
   resource_group_id = module.resource_group.resource_group_id
 }
