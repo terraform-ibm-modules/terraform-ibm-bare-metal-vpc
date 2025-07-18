@@ -14,8 +14,8 @@ variable "region" {
 }
 
 variable "zone" {
-  type        = string
-  description = "The IBM Cloud region zone where all resources will be deployed. Example values: 'us-south-1', 'eu-gb-1', 'au-syd-1'."
+  type        = number
+  description = "The IBM Cloud region zone numbers where all resources will be deployed."
 }
 
 variable "resource_group" {
@@ -51,5 +51,5 @@ variable "ssh_key" {
 variable "profile" {
   description = "The hardware profile defining the CPU, memory, and storage configuration of the bare metal server."
   type        = string
-  default     = "bx2d-metal-96x384"
+  default     = "cx2d-metal-96x192"
 }
