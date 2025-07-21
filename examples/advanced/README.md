@@ -17,3 +17,6 @@ VPC Deployment:
 Bare Metal Server Provisioning:
 - Deploys 2 baremetal servers on selected zone.
 - Ensures proper connectivity with SSH keys, bandwidth allocation, and VLAN configurations.
+- Enables User data scripts
+- Primary and Secondary VNI enabled.
+- Allow secure boot with TPM mode.

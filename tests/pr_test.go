@@ -23,7 +23,12 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 		Region:        region,
+		TerraformVars: map[string]interface{}{
+			"profile": "cx2d-metal-96x192",
+			"zone":    1,
+		},
 	})
+
 	return options
 }
 
