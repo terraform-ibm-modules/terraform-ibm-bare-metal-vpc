@@ -45,6 +45,7 @@ variable "access_tags" {
   description = "A list of access management tags to be attached to the bare metal server for categorization and policy enforcement."
   type        = list(string)
   default     = []
+  nullable    = false  
 }
 
 ####### Timeout configurations ########
