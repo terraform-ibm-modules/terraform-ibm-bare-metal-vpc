@@ -10,12 +10,7 @@ output "baremetal_server_name" {
 
 output "baremetal_server_primary_ip" {
   description = "Output for baremetal Primary IP address."
-  value       = length(ibm_is_virtual_network_interface.bms) > 0 ? ibm_is_virtual_network_interface.bms[0].primary_ip[0].address : null
-
-  depends_on = [
-    ibm_is_bare_metal_server.bms,
-    ibm_is_virtual_network_interface.bms
-  ]
+  value = length(var.allowed_vlan_ids) > 0 ? ibm_is_bare_metal_server.bms.primary_network_attachment[0].virtual_network_interface[0].primary_ip[0].address : ibm_is_bare_metal_server.bms.primary_network_interface[0].primary_ip[0].address
 }
 
 output "baremetal_server_primary_vni_id" {
@@ -24,13 +19,8 @@ output "baremetal_server_primary_vni_id" {
 }
 
 output "baremetal_server_secondary_ip" {
-  description = "Output for baremetal Primary IP address."
-  value       = length(ibm_is_virtual_network_interface.bms_secondary) > 0 ? ibm_is_virtual_network_interface.bms_secondary[0].primary_ip[0].address : null
-
-  depends_on = [
-    ibm_is_bare_metal_server.bms,
-    ibm_is_virtual_network_interface.bms_secondary
-  ]
+  description = "Output for baremetal Secondary IP address."
+  value = var.secondary_vni_enabled ? ibm_is_bare_metal_server.bms.network_attachments[0].virtual_network_interface[0].primary_ip[0].address : null
 }
 
 output "baremetal_server_secondary_vni_id" {
