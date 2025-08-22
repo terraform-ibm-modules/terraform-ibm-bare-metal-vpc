@@ -39,6 +39,7 @@ variable "allowed_vlan_ids" {
   description = "A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102]"
   type        = list(number)
   default     = []
+  nullable    = false
 }
 
 variable "access_tags" {
