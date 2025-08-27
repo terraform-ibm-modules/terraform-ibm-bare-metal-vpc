@@ -8,6 +8,13 @@ resource "ibm_is_virtual_network_interface" "bms" {
   subnet          = var.subnet_id
   resource_group  = var.resource_group_id
   security_groups = var.security_group_ids
+
+  dynamic "primary_ip" {
+    for_each = var.manage_reserved_ips ? [1] : []
+    content {
+      reserved_ip = ibm_is_subnet_reserved_ip.vsi_ip[each.value.name].reserved_ip
+    }
+  }  
 }
 
 # Secondary VNI
@@ -17,6 +24,13 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
   subnet          = var.secondary_subnet_id != "" ? var.secondary_subnet_id : var.subnet_id
   resource_group  = var.resource_group_id
   security_groups = var.secondary_security_group_ids != null ? var.secondary_security_group_ids : var.security_group_ids
+
+  dynamic "primary_ip" {
+    for_each = var.manage_reserved_ips ? [1] : []
+    content {
+      reserved_ip = ibm_is_subnet_reserved_ip.vsi_ip[each.value.name].reserved_ip
+    }
+  }  
 }
 
 resource "ibm_is_bare_metal_server" "bms" {

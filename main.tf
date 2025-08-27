@@ -59,6 +59,7 @@ module "baremetal" {
   security_group_ids = local.security_group_ids
   bandwidth          = var.bandwidth
   allowed_vlan_ids   = var.allowed_vlan_ids
+  manage_reserved_ips = var.manage_reserved_ips
 
   # Secondary VNI parameters
   secondary_vni_enabled        = var.secondary_vni_enabled
