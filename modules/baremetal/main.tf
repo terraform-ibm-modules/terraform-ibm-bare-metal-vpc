@@ -30,7 +30,7 @@ resource "ibm_is_virtual_network_interface" "bms" {
     content {
       reserved_ip = ibm_is_subnet_reserved_ip.bms_primary_reserverd_ip[0].reserved_ip
     }
-  }  
+  }
 }
 
 # Secondary VNI
@@ -46,7 +46,7 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
     content {
       reserved_ip = ibm_is_subnet_reserved_ip.bms_secondary_reserverd_ip[0].reserved_ip
     }
-  }  
+  }
 }
 
 resource "ibm_is_bare_metal_server" "bms" {

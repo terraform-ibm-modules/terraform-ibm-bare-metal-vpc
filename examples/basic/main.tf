@@ -68,7 +68,7 @@ module "slz_baremetal" {
   image_id              = data.ibm_is_image.slz_vsi_image.id
   subnet_ids            = [for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-${var.zone}"]
   ssh_key_ids           = [local.ssh_key_id]
-  manage_reserved_ips   = false 
+  manage_reserved_ips   = false
   bandwidth             = 100000
   create_security_group = false
   security_group_ids    = []

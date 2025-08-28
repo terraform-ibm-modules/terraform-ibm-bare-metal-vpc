@@ -51,14 +51,14 @@ module "baremetal" {
   source   = "./modules/baremetal"
   for_each = local.bms_server_map
 
-  name               = each.value.prefix
-  profile            = var.profile
-  image_id           = var.image_id
-  subnet_id          = each.value.subnet_id
-  ssh_key_ids        = var.ssh_key_ids
-  security_group_ids = local.security_group_ids
-  bandwidth          = var.bandwidth
-  allowed_vlan_ids   = var.allowed_vlan_ids
+  name                = each.value.prefix
+  profile             = var.profile
+  image_id            = var.image_id
+  subnet_id           = each.value.subnet_id
+  ssh_key_ids         = var.ssh_key_ids
+  security_group_ids  = local.security_group_ids
+  bandwidth           = var.bandwidth
+  allowed_vlan_ids    = var.allowed_vlan_ids
   manage_reserved_ips = var.manage_reserved_ips
 
   # Secondary VNI parameters
