@@ -32,6 +32,7 @@ module "slz_baremetal" {
   image_id                     = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
   subnet_ids                   = ["r022-d72dc796-b08a-4f8e-a5aa-6c523284173d","r092-d72ddcds96-b0sa-4f8e-a5aa-6c523284s173d"]
   ssh_key_ids                  = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  manage_reserved_ips          = false
   bandwidth                    = 100000
   allowed_vlans_ids            = ["100", "102"]
   user_data                    = "service httpd start"
@@ -64,6 +65,8 @@ No modules.
 | Name | Type |
 |------|------|
 | [ibm_is_bare_metal_server.bms](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_bare_metal_server) | resource |
+| [ibm_is_subnet_reserved_ip.bms_primary_reserved_ip](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_reserved_ip) | resource |
+| [ibm_is_subnet_reserved_ip.bms_secondary_reserved_ip](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_reserved_ip) | resource |
 | [ibm_is_virtual_network_interface.bms](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_virtual_network_interface) | resource |
 | [ibm_is_virtual_network_interface.bms_secondary](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_virtual_network_interface) | resource |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
@@ -79,6 +82,7 @@ No modules.
 | <a name="input_delete_timeout"></a> [delete\_timeout](#input\_delete\_timeout) | Timeout for deleting the bare metal server | `string` | `"60m"` | no |
 | <a name="input_enable_secure_boot"></a> [enable\_secure\_boot](#input\_enable\_secure\_boot) | Indicates whether secure boot is enabled. If enabled, the image must support secure boot or the server will fail to boot. | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
+| <a name="input_manage_reserved_ips"></a> [manage\_reserved\_ips](#input\_manage\_reserved\_ips) | Set to `true` if you want this terraform module to manage the reserved IP addresses that are assigned to BMS instances. If this option is enabled, when any BMS is recreated it should retain its original IP. | `bool` | `false` | no |
 | <a name="input_name"></a> [name](#input\_name) | The base name for the bare metal servers and its resources. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |

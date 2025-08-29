@@ -74,6 +74,7 @@ module "slz_baremetal" {
   image_id                     = "r022-a327ec71-6f38-4bdc-99c8-33e723786a91"
   subnet_id                    = "r022-d72dc796-b08a-4f8e-a5aa-6c523284173d"
   ssh_key_ids                  = ["r022-89b37a2e-e78d-46b8-8989-5f8d00cd44d2"]
+  manage_reserved_ips          = false
   bandwidth                    = 100000
   create_security_group        = false
   security_group_ids           = ["r018-c76a3522-77aa-41eb-b6bf-76cf5416f9ad"]
@@ -178,6 +179,7 @@ You need the following permissions to run this module.
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Setting to true will be create a new security group | `bool` | `false` | no |
 | <a name="input_enable_secure_boot"></a> [enable\_secure\_boot](#input\_enable\_secure\_boot) | Indicates whether secure boot is enabled. If enabled, the image must support secure boot or the server will fail to boot. | `bool` | `false` | no |
 | <a name="input_image_id"></a> [image\_id](#input\_image\_id) | The unique identifier of the operating system image to be installed on the bare metal server. | `string` | n/a | yes |
+| <a name="input_manage_reserved_ips"></a> [manage\_reserved\_ips](#input\_manage\_reserved\_ips) | Set to `true` if you want this terraform module to manage the reserved IP addresses that are assigned to VSI instances. If this option is enabled, when any VSI is recreated it should retain its original IP. | `bool` | `false` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
