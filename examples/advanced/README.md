@@ -20,4 +20,4 @@ Bare Metal Server Provisioning:
 - Enables User data scripts
 - Primary and Secondary VNI enabled.
 - Allow secure boot with TPM mode.
-- Options for enabling reserverd IP's
+- Options for enabling reserved IP's
