@@ -3,7 +3,7 @@ data "ibm_is_subnet" "subnet" {
 }
 
 # Primary reserved IP
-resource "ibm_is_subnet_reserved_ip" "bms_primary_reserverd_ip" {
+resource "ibm_is_subnet_reserved_ip" "bms_primary_reserved_ip" {
   count       = var.manage_reserved_ips ? 1 : 0
   name        = "${var.name}-prim-res-ip"
   subnet      = var.subnet_id
@@ -11,7 +11,7 @@ resource "ibm_is_subnet_reserved_ip" "bms_primary_reserverd_ip" {
 }
 
 # Secondary reserved IP
-resource "ibm_is_subnet_reserved_ip" "bms_secondary_reserverd_ip" {
+resource "ibm_is_subnet_reserved_ip" "bms_secondary_reserved_ip" {
   count       = var.manage_reserved_ips && var.secondary_vni_enabled ? 1 : 0
   name        = "${var.name}-sec-res-ip"
   subnet      = var.secondary_subnet_id != "" ? var.secondary_subnet_id : var.subnet_id
@@ -28,7 +28,7 @@ resource "ibm_is_virtual_network_interface" "bms" {
   dynamic "primary_ip" {
     for_each = var.manage_reserved_ips ? [1] : []
     content {
-      reserved_ip = ibm_is_subnet_reserved_ip.bms_primary_reserverd_ip[0].reserved_ip
+      reserved_ip = ibm_is_subnet_reserved_ip.bms_primary_reserved_ip[0].reserved_ip
     }
   }
 }
@@ -44,7 +44,7 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
   dynamic "primary_ip" {
     for_each = var.manage_reserved_ips ? [1] : []
     content {
-      reserved_ip = ibm_is_subnet_reserved_ip.bms_secondary_reserverd_ip[0].reserved_ip
+      reserved_ip = ibm_is_subnet_reserved_ip.bms_secondary_reserved_ip[0].reserved_ip
     }
   }
 }
