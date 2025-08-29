@@ -2,12 +2,35 @@ data "ibm_is_subnet" "subnet" {
   identifier = var.subnet_id
 }
 
+# Primary reserved IP
+resource "ibm_is_subnet_reserved_ip" "bms_primary_reserverd_ip" {
+  count       = var.manage_reserved_ips ? 1 : 0
+  name        = "${var.name}-prim-res-ip"
+  subnet      = var.subnet_id
+  auto_delete = false
+}
+
+# Secondary reserved IP
+resource "ibm_is_subnet_reserved_ip" "bms_secondary_reserverd_ip" {
+  count       = var.manage_reserved_ips && var.secondary_vni_enabled ? 1 : 0
+  name        = "${var.name}-sec-res-ip"
+  subnet      = var.secondary_subnet_id != "" ? var.secondary_subnet_id : var.subnet_id
+  auto_delete = false
+}
+
 resource "ibm_is_virtual_network_interface" "bms" {
   count           = length(var.allowed_vlan_ids) > 0 ? 1 : 0
   name            = "${var.name}-vni"
   subnet          = var.subnet_id
   resource_group  = var.resource_group_id
   security_groups = var.security_group_ids
+
+  dynamic "primary_ip" {
+    for_each = var.manage_reserved_ips ? [1] : []
+    content {
+      reserved_ip = ibm_is_subnet_reserved_ip.bms_primary_reserverd_ip[0].reserved_ip
+    }
+  }
 }
 
 # Secondary VNI
@@ -17,6 +40,13 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
   subnet          = var.secondary_subnet_id != "" ? var.secondary_subnet_id : var.subnet_id
   resource_group  = var.resource_group_id
   security_groups = var.secondary_security_group_ids != null ? var.secondary_security_group_ids : var.security_group_ids
+
+  dynamic "primary_ip" {
+    for_each = var.manage_reserved_ips ? [1] : []
+    content {
+      reserved_ip = ibm_is_subnet_reserved_ip.bms_secondary_reserverd_ip[0].reserved_ip
+    }
+  }
 }
 
 resource "ibm_is_bare_metal_server" "bms" {

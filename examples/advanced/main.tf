@@ -100,6 +100,7 @@ module "slz_baremetal" {
   allowed_vlan_ids      = ["100", "102"]
   create_security_group = true
   security_group_ids    = []
+  manage_reserved_ips   = true
   user_data             = <<-EOF
     #!/bin/bash
     echo "Provisioning BareMetal Server at $(date)"

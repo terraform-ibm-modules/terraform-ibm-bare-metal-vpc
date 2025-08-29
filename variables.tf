@@ -122,6 +122,16 @@ variable "secondary_allowed_vlan_ids" {
 }
 
 ##############################################################################
+# Reserved IP's Variables
+##############################################################################
+
+variable "manage_reserved_ips" {
+  description = "Set to `true` if you want this terraform module to manage the reserved IP addresses that are assigned to VSI instances. If this option is enabled, when any VSI is recreated it should retain its original IP."
+  type        = bool
+  default     = false
+}
+
+##############################################################################
 # Rule Variables
 ##############################################################################
 
