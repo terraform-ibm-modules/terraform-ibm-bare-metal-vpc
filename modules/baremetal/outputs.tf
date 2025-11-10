@@ -30,5 +30,5 @@ output "baremetal_server_secondary_vni_id" {
 
 output "baremetal_server_primary_reserved_ip" {
   description = "Output for baremetal Primary Reserved IP."
-  value       = length(var.allowed_vlan_ids) > 0 ? ibm_is_bare_metal_server.bms.primary_network_attachment[0].primary_ip[0].id : ibm_is_bare_metal_server.bms.primary_network_interface[0].primary_ip[0].reserved_ip
+  value       = ibm_is_bare_metal_server.bms.primary_network_interface[0].primary_ip[0].reserved_ip
 }
