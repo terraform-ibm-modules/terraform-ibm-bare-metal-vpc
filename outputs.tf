@@ -12,6 +12,7 @@ output "baremetal_servers" {
       bms_primary_vni_id      = key.baremetal_server_primary_vni_id
       bms_server_secondary_ip = key.baremetal_server_secondary_ip
       bms_secondary_vni_id    = key.baremetal_server_secondary_vni_id
+      reserved_ip             = key.reserved_ip
     }
   }
   description = "IDs and names of the provisioned bare metal servers"
