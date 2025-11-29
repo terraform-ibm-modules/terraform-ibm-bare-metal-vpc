@@ -20,9 +20,9 @@ The IBM Cloud Bare Metal Server Deployment Module provisions IBM Cloud Bare Meta
 * [Submodules](./modules)
     * [baremetal](./modules/baremetal)
 * [Examples](./examples)
-    * [Advanced example](./examples/advanced)
-    * [Basic example](./examples/basic)
-    * [Multi-zone example](./examples/multi-zone-deployment)
+    * <div style="display: inline-block;"><a href="./examples/advanced">Advanced example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=bmv-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-bare-metal-vpc/tree/main/examples/advanced" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/basic">Basic example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=bmv-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-bare-metal-vpc/tree/main/examples/basic" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
+    * <div style="display: inline-block;"><a href="./examples/multi-zone-deployment">Multi-zone example</a></div> <div style="display: inline-block; vertical-align: middle;"><a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=bmv-multi-zone-deployment-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-bare-metal-vpc/tree/main/examples/multi-zone-deployment" target="_blank"><img src="https://cloud.ibm.com/media/docs/images/icons/Deploy_to_cloud.svg" alt="Deploy to IBM Cloud button"></a></div>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -158,7 +158,7 @@ You need the following permissions to run this module.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_baremetal"></a> [baremetal](#module\_baremetal) | ./modules/baremetal | n/a |
-| <a name="module_sg_group"></a> [sg\_group](#module\_sg\_group) | terraform-ibm-modules/security-group/ibm | 2.6.2 |
+| <a name="module_sg_group"></a> [sg\_group](#module\_sg\_group) | terraform-ibm-modules/security-group/ibm | 2.8.0 |
 
 ### Resources
 
