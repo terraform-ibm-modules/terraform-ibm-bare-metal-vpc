@@ -104,6 +104,7 @@ No modules.
 | <a name="output_baremetal_server_id"></a> [baremetal\_server\_id](#output\_baremetal\_server\_id) | Output for baremetal servers ID. |
 | <a name="output_baremetal_server_name"></a> [baremetal\_server\_name](#output\_baremetal\_server\_name) | Output for baremetal servers name. |
 | <a name="output_baremetal_server_primary_ip"></a> [baremetal\_server\_primary\_ip](#output\_baremetal\_server\_primary\_ip) | Output for baremetal Primary IP address. |
+| <a name="output_baremetal_server_primary_reserved_ip"></a> [baremetal\_server\_primary\_reserved\_ip](#output\_baremetal\_server\_primary\_reserved\_ip) | Output for baremetal Primary Reserved IP. |
 | <a name="output_baremetal_server_primary_vni_id"></a> [baremetal\_server\_primary\_vni\_id](#output\_baremetal\_server\_primary\_vni\_id) | Output for primary virtual network interface ID. |
 | <a name="output_baremetal_server_secondary_ip"></a> [baremetal\_server\_secondary\_ip](#output\_baremetal\_server\_secondary\_ip) | Output for baremetal Secondary IP address. |
 | <a name="output_baremetal_server_secondary_vni_id"></a> [baremetal\_server\_secondary\_vni\_id](#output\_baremetal\_server\_secondary\_vni\_id) | Output for secondary virtual network interface ID. |
