@@ -31,7 +31,7 @@ locals {
 module "sg_group" {
   count   = local.create_security_group ? 1 : 0
   source  = "terraform-ibm-modules/security-group/ibm"
-  version = "2.8.5"
+  version = "2.8.6"
 
   add_ibm_cloud_internal_rules = true
   resource_group               = var.resource_group_id
