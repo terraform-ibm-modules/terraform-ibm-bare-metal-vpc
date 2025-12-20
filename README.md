@@ -158,7 +158,7 @@ You need the following permissions to run this module.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_baremetal"></a> [baremetal](#module\_baremetal) | ./modules/baremetal | n/a |
-| <a name="module_sg_group"></a> [sg\_group](#module\_sg\_group) | terraform-ibm-modules/security-group/ibm | 2.8.6 |
+| <a name="module_sg_group"></a> [sg\_group](#module\_sg\_group) | terraform-ibm-modules/security-group/ibm | 2.8.7 |
 
 ### Resources
 
