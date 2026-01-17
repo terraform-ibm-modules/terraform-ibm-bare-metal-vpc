@@ -1,5 +1,10 @@
 # Basic example
 
+<!-- BEGIN SCHEMATICS DEPLOY HOOK -->
+<a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=bare-metal-vpc-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-bare-metal-vpc/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom;"></a>
+<!-- END SCHEMATICS DEPLOY HOOK -->
+
+
 This Terraform configuration provisions IBM Cloud infrastructure, including a resource group, SSH key management, VPC, and Bare Metal Servers (BMS). It automates the setup, ensuring resources are dynamically created or reused based on input variables.
 
 SSH Key Management:
@@ -17,3 +22,7 @@ VPC Deployment:
 Bare Metal Server Provisioning:
 - Deploys single baremetal server on a selected zone.
 - Ensures proper connectivity with SSH keys, bandwidth allocation, and VLAN configurations.
+
+<!-- BEGIN SCHEMATICS DEPLOY TIP HOOK -->
+:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
+<!-- END SCHEMATICS DEPLOY TIP HOOK -->
