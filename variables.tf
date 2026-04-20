@@ -42,7 +42,7 @@ variable "allowed_vlan_ids" {
 }
 
 variable "access_tags" {
-  description = "A list of access management tags to be attached to the bare metal server for categorization and policy enforcement."
+  description = "Add access management tags to the IBM Cloud Bare Metal Servers for VPC instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console)."
   type        = list(string)
   default     = []
 }
@@ -59,11 +59,15 @@ variable "subnet_ids" {
 
 }
 
-variable "tags" {
-  description = "List of tags to apply to resources created by this module."
+variable "resource_tags" {
+  description = "Add user resource tags to the IBM Cloud Bare Metal Servers for VPC instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types)."
   type        = list(string)
   default     = []
-  nullable    = false
+  validation {
+    condition     = alltrue([for tag in var.resource_tags : can(regex("^[A-Za-z0-9 _\\-.:](1, 128)$", tag))])
+    error_message = "Each resource tag must be 128 characters or less and may contain only A-Z, a-z, 0-9, spaces, underscore (_), hyphen (-), period (.), and colon (:)."
+  }
+  nullable = false
 }
 
 variable "create_security_group" {
