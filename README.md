@@ -192,7 +192,7 @@ You need the following permissions to run this module.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access management tags to be attached to the bare metal server for categorization and policy enforcement. | `list(string)` | `[]` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Add access management tags to the IBM Cloud Bare Metal Servers for VPC instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console). | `list(string)` | `[]` | no |
 | <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
 | <a name="input_create_security_group"></a> [create\_security\_group](#input\_create\_security\_group) | Setting to true will be create a new security group | `bool` | `false` | no |
@@ -202,6 +202,7 @@ You need the following permissions to run this module.
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The base name for the bare metal server. If multiple instances are created, an index will be appended for uniqueness. | `string` | n/a | yes |
 | <a name="input_profile"></a> [profile](#input\_profile) | The hardware profile defining the CPU, memory, and storage configuration of the bare metal server. | `string` | n/a | yes |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | ID of the resource group where you want to create the service. | `string` | `null` | no |
+| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Add user resource tags to the IBM Cloud Bare Metal Servers for VPC instance to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types). | `list(string)` | `[]` | no |
 | <a name="input_secondary_allowed_vlan_ids"></a> [secondary\_allowed\_vlan\_ids](#input\_secondary\_allowed\_vlan\_ids) | List of allowed VLAN IDs for secondary VNIs | `list(number)` | `[]` | no |
 | <a name="input_secondary_security_group_ids"></a> [secondary\_security\_group\_ids](#input\_secondary\_security\_group\_ids) | List of security group IDs for secondary VNIs | `list(string)` | `[]` | no |
 | <a name="input_secondary_subnet_ids"></a> [secondary\_subnet\_ids](#input\_secondary\_subnet\_ids) | List of secondary subnet IDs (if empty, will use primary subnets) | `list(string)` | `[]` | no |
@@ -211,7 +212,6 @@ You need the following permissions to run this module.
 | <a name="input_server_count"></a> [server\_count](#input\_server\_count) | Specifies the number of bare metal server instances to provision. If greater than one, multiple instances will be created and distributed across the available subnets in a round-robin manner. For example, if the server count is 3 and there are 2 subnets, Server 1 and Server 3 will be deployed on Subnet 1, while Server 2 will be deployed on Subnet 2. | `number` | `1` | no |
 | <a name="input_ssh_key_ids"></a> [ssh\_key\_ids](#input\_ssh\_key\_ids) | A list of SSH key IDs that will be used for secure access to the bare metal server. | `list(string)` | n/a | yes |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | A list of subnet IDs where the bare metal server will be deployed, ensuring proper network segmentation. | `list(string)` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
 | <a name="input_tpm_mode"></a> [tpm\_mode](#input\_tpm\_mode) | Trusted platform module (TPM) configuration for the bare metal server. For more details see [Secure Boot and TPM documentation](https://cloud.ibm.com/docs/vpc?topic=vpc-secure-boot-tpm) | `string` | `"disabled"` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | User data to initialize BMS deployment | `string` | `null` | no |
 
