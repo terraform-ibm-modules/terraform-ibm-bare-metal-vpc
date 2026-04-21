@@ -2,6 +2,12 @@ data "ibm_is_subnet" "subnet" {
   identifier = var.subnet_id
 }
 
+# Check whether access tags are valid and exist in the account
+data "ibm_iam_access_tag" "access_tag" {
+  for_each = length(var.access_tags) != 0 ? toset(var.access_tags) : []
+  name     = each.value
+}
+
 # Primary reserved IP
 resource "ibm_is_subnet_reserved_ip" "bms_primary_reserved_ip" {
   count       = var.manage_reserved_ips ? 1 : 0
@@ -50,6 +56,7 @@ resource "ibm_is_virtual_network_interface" "bms_secondary" {
 }
 
 resource "ibm_is_bare_metal_server" "bms" {
+  depends_on         = [data.ibm_iam_access_tag.access_tag] # Force dependency on data source validation to ensure access_tags exist and are valid before use.
   profile            = var.profile
   name               = var.name
   image              = var.image_id
