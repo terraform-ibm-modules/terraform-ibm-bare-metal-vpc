@@ -93,6 +93,8 @@ module "slz_baremetal" {
   server_count          = 2
   prefix                = var.prefix
   profile               = var.profile
+  resource_tags         = var.resource_tags
+  access_tags           = var.access_tags
   image_id              = data.ibm_is_image.slz_vsi_image.id
   subnet_ids            = [[for subnet in module.slz_vpc.subnet_zone_list : subnet.id if subnet.zone == "${var.region}-${var.zone}"][0]]
   ssh_key_ids           = [local.ssh_key_id]

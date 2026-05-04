@@ -36,6 +36,12 @@ variable "resource_tags" {
   default     = null
 }
 
+variable "access_tags" {
+  description = "Optional list of access management tags to attach to the IBM Cloud Bare Metal Servers for VPC instance."
+  type        = list(string)
+  default     = []
+}
+
 variable "vpc_name" {
   type        = string
   description = "The name of the IBM Cloud Virtual Private Cloud (VPC) where the servers will be deployed."
