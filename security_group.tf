@@ -38,7 +38,7 @@ module "sg_group" {
   security_group_name          = "${var.prefix}-sg"
   security_group_rules         = var.security_group_rules
   vpc_id                       = values(data.ibm_is_subnet.subnet)[0].vpc
-  tags                         = var.tags
+  tags                         = var.resource_tags
 }
 
 ##############################################################################
