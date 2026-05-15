@@ -74,6 +74,5 @@ module "slz_baremetal" {
   security_group_ids    = []
   user_data             = null
   allowed_vlan_ids      = ["100", "102"]
-  access_tags           = null
   resource_group_id     = module.resource_group.resource_group_id
 }

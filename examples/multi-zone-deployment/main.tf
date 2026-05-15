@@ -73,6 +73,5 @@ module "slz_baremetal" {
   create_security_group = false
   security_group_ids    = []
   user_data             = null
-  access_tags           = null
   resource_group_id     = module.resource_group.resource_group_id
 }
