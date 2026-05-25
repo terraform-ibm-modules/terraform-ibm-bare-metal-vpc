@@ -142,10 +142,10 @@ module "slz_baremetal" {
 
     # Minimal Rule (defaults to inbound)
     {
-      name      = "default-rule"
-      remote    = "192.168.1.1/32"
-      protocol  = "tcp"
-      port_min  = 22
+      name     = "default-rule"
+      remote   = "192.168.1.1/32"
+      protocol = "tcp"
+      port_min = 22
     }
   ]
 
