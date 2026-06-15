@@ -153,24 +153,11 @@ variable "security_group_rules" {
       name      = string
       direction = optional(string, "inbound")
       remote    = string
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
+      protocol  = optional(string)
+      port_min  = optional(number)
+      port_max  = optional(number)
+      type      = optional(number)
+      code      = optional(number)
     })
   )
   default = []
@@ -200,21 +187,13 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "Security group rules can only have one of `icmp`, `udp`, or `tcp`."
-    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : length(distinct(
-      # Get flat list of results
-      flatten([
-        # Check through rules
-        for rule in var.security_group_rules :
-        # Return true if there is more than one of `icmp`, `udp`, or `tcp`
-        true if length(
-          [
-            for type in ["tcp", "udp", "icmp"] :
-            true if rule[type] != null
-          ]
-        ) > 1
-      ])
-    )) == 0 # Checks for length. If all fields all correct, array will be empty
+    error_message = "When protocol is `icmp`, `port_min` and `port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
+    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : alltrue([
+      for rule in var.security_group_rules :
+      rule.protocol == "icmp" ? (rule.port_min == null && rule.port_max == null) :
+      (rule.protocol == "tcp" || rule.protocol == "udp") ? (rule.type == null && rule.code == null) :
+      true
+    ])
   }
 }
 
