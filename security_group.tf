@@ -31,14 +31,14 @@ locals {
 module "sg_group" {
   count   = local.create_security_group ? 1 : 0
   source  = "terraform-ibm-modules/security-group/ibm"
-  version = "2.10.0"
+  version = "2.11.0"
 
   add_ibm_cloud_internal_rules = true
   resource_group               = var.resource_group_id
   security_group_name          = "${var.prefix}-sg"
   security_group_rules         = var.security_group_rules
   vpc_id                       = values(data.ibm_is_subnet.subnet)[0].vpc
-  tags                         = var.resource_tags
+  resource_tags                = var.resource_tags
 }
 
 ##############################################################################
