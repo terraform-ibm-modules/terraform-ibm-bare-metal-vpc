@@ -10,8 +10,10 @@ output "baremetal_servers" {
       bms_server_name                      = key.baremetal_server_name
       bms_server_primary_ip                = key.baremetal_server_primary_ip
       bms_primary_vni_id                   = key.baremetal_server_primary_vni_id
+      bms_primary_vni_name                 = key.baremetal_server_primary_vni_name
       bms_server_secondary_ip              = key.baremetal_server_secondary_ip
       bms_secondary_vni_id                 = key.baremetal_server_secondary_vni_id
+      bms_secondary_vni_name               = key.baremetal_server_secondary_vni_name
       baremetal_server_primary_reserved_ip = key.baremetal_server_primary_reserved_ip
     }
   }

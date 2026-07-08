@@ -18,6 +18,11 @@ output "baremetal_server_primary_vni_id" {
   value       = one(ibm_is_virtual_network_interface.bms[*].id)
 }
 
+output "baremetal_server_primary_vni_name" {
+  description = "Output for primary virtual network interface name."
+  value       = one(ibm_is_virtual_network_interface.bms[*].name)
+}
+
 output "baremetal_server_secondary_ip" {
   description = "Output for baremetal Secondary IP address."
   value       = var.secondary_vni_enabled ? ibm_is_bare_metal_server.bms.network_attachments[0].virtual_network_interface[0].primary_ip[0].address : null
@@ -26,6 +31,11 @@ output "baremetal_server_secondary_ip" {
 output "baremetal_server_secondary_vni_id" {
   description = "Output for secondary virtual network interface ID."
   value       = one(ibm_is_virtual_network_interface.bms_secondary[*].id)
+}
+
+output "baremetal_server_secondary_vni_name" {
+  description = "Output for secondary virtual network interface name."
+  value       = one(ibm_is_virtual_network_interface.bms_secondary[*].name)
 }
 
 output "baremetal_server_primary_reserved_ip" {
