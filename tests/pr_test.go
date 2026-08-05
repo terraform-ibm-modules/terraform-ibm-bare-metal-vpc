@@ -44,7 +44,7 @@ func TestRunBasicExample(t *testing.T) {
 // Consistency test for the upgrade example
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
-	options := setupOptions(t, "bms-upg", upgradeExampleDir, "eu-gb", 1)
+	options := setupOptions(t, "bms-upg", upgradeExampleDir, "us-south", 1)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {
