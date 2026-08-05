@@ -14,7 +14,7 @@ const resourceGroup = "geretain-test-resources"
 // Ensure every example directory has a corresponding test
 const upgradeExampleDir = "examples/basic"
 const basicExampleDir = "examples/basic"
-const region = "eu-gb"
+const region = "jp-tok"
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
@@ -25,7 +25,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Region:        region,
 		TerraformVars: map[string]interface{}{
 			"profile": "cx2d-metal-96x192",
-			"zone":    1,
+			"zone":    2,
 		},
 	})
 
