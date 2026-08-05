@@ -34,7 +34,7 @@ func setupOptions(t *testing.T, prefix string, dir string, region string, zone i
 // Consistency test for the basic example
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
-	options := setupOptions(t, "bms-basic", basicExampleDir, "us-east", 1)
+	options := setupOptions(t, "bms-basic", basicExampleDir, "eu-de", 1)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
