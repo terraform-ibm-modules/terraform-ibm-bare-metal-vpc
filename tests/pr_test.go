@@ -14,9 +14,8 @@ const resourceGroup = "geretain-test-resources"
 // Ensure every example directory has a corresponding test
 const upgradeExampleDir = "examples/basic"
 const basicExampleDir = "examples/basic"
-const region = "eu-gb"
 
-func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+func setupOptions(t *testing.T, prefix string, dir string, region string, zone int) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  dir,
@@ -25,7 +24,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Region:        region,
 		TerraformVars: map[string]interface{}{
 			"profile": "cx2d-metal-96x192",
-			"zone":    1,
+			"zone":    zone,
 		},
 	})
 
@@ -35,7 +34,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 // Consistency test for the basic example
 func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
-	options := setupOptions(t, "bms-basic", basicExampleDir)
+	options := setupOptions(t, "bms-basic", basicExampleDir, "eu-de", 1)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
@@ -45,7 +44,7 @@ func TestRunBasicExample(t *testing.T) {
 // Consistency test for the upgrade example
 func TestRunUpgradeExample(t *testing.T) {
 	t.Parallel()
-	options := setupOptions(t, "bms-upg", upgradeExampleDir)
+	options := setupOptions(t, "bms-upg", upgradeExampleDir, "us-south", 1)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {
