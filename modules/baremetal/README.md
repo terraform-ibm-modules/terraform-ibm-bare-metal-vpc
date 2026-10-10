@@ -52,7 +52,7 @@ module "slz_baremetal" {
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.80.3, < 3.0.0 |
 
@@ -63,7 +63,7 @@ No modules.
 ### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [ibm_is_bare_metal_server.bms](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_bare_metal_server) | resource |
 | [ibm_is_subnet_reserved_ip.bms_primary_reserved_ip](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_reserved_ip) | resource |
 | [ibm_is_subnet_reserved_ip.bms_secondary_reserved_ip](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_reserved_ip) | resource |
@@ -75,7 +75,7 @@ No modules.
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Add access management tags to the IBM Cloud Bare Metal Servers for VPC instance to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console). | `list(string)` | `[]` | no |
 | <a name="input_allowed_vlan_ids"></a> [allowed\_vlan\_ids](#input\_allowed\_vlan\_ids) | A list of VLAN IDs that are permitted for the bare metal server, ensuring network isolation and control. Example: [100, 102] | `list(number)` | `[]` | no |
 | <a name="input_bandwidth"></a> [bandwidth](#input\_bandwidth) | The allocated bandwidth (in Mbps) for the bare metal server to manage network traffic. If unset, default values apply. | `number` | `null` | no |
@@ -101,7 +101,7 @@ No modules.
 ### Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_baremetal_server_id"></a> [baremetal\_server\_id](#output\_baremetal\_server\_id) | Output for baremetal servers ID. |
 | <a name="output_baremetal_server_name"></a> [baremetal\_server\_name](#output\_baremetal\_server\_name) | Output for baremetal servers name. |
 | <a name="output_baremetal_server_primary_ip"></a> [baremetal\_server\_primary\_ip](#output\_baremetal\_server\_primary\_ip) | Output for baremetal Primary IP address. |
